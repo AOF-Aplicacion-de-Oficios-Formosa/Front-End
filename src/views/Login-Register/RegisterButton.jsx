@@ -1,13 +1,15 @@
 import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 
-const RegisterButton = ({ handleRegister }) => {
+const RegisterButton = () => {
+    const navigation = useNavigation()
     return (
         <View style={styles.container}>
             <TouchableOpacity
                 title="Registrar"
-                onPress={handleRegister}
+                onPress={() => { navigation.navigate('register2') }}
                 style={styles.button}
             >
                 <Text style={styles.buttonText}>
