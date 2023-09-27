@@ -20,7 +20,7 @@ const styles = ScaledSheet.create({
     button: {
         height: '40@vs',
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     text: {
         fontWeight: 'bold',
