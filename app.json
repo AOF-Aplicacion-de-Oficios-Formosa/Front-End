@@ -12,6 +12,7 @@
       "backgroundColor": "#ffffff"
     },
     "plugins": [
+      ["expo-image-picker"],
       [
         "expo-media-library",
         {
@@ -27,7 +28,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.blito00.AOF"
@@ -39,6 +40,7 @@
       "eas": {
         "projectId": "a71e08cf-2ead-40b8-9948-2523670a262f"
       }
-    }
+    },
+    "permissions": ["CAMERA_ROLL"]
   }
 }

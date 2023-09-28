@@ -1,111 +1,118 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Camera, CameraType, focusCamera} from 'expo-camera'
-import { Permissions, ImagePicker } from 'expo';
-import * as MediaLibrary from 'expo-media-library'
-import { TouchableWithoutFeedback, View, Button, Text, Image } from "react-native";
-import { ScaledSheet, } from "react-native-size-matters";
-import CameraButtons from "./Login-Register/CameraButtons";
+import { Camera } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+import { View, Text, Image, Button } from 'react-native';
+import CameraButtons from './Login-Register/CameraButtons';
+import { ScaledSheet } from 'react-native-size-matters';
+import { launchCamera } from 'react-native-image-picker';
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
-  const cameraRef= useRef(null)
-  const [ requestPermission ] = MediaLibrary.usePermissions();
+  const cameraRef = useRef(null);
 
-  useEffect(() =>{
-    (async()=> {
+  useEffect(() => {
+    (async () => {
       MediaLibrary.requestPermissionsAsync();
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === 'granted')
-    })()
-  }, [])
+      setHasCameraPermission(cameraStatus.status === 'granted');
+    })();
+  }, []);
 
-  const takePicture = async()=> {
-    if (cameraRef){
-      try{
-        const data = await cameraRef.current.takePictureAsync();
-        console.log(data)
-        setImage(data.uri)
-      } catch(e) {
-        console.log(e)
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      try {
+        const options = { quality: 0.5, base64: true };
+        const data = await cameraRef.current.takePictureAsync(options);
+        setImage(data.uri);
+      } catch (e) {
+        console.log(e);
       }
     }
-  }
-  
-  const saveImage = async()=>{
-    if(image) {
-      try{
+  };
+  const saveImage = async () => {
+    if (image) {
+      try {
         await MediaLibrary.createAssetAsync(image);
-        alert('Foto guardada!✌️')
-      }catch(e) {
-        console.log(e)
+        alert('Foto guardada! ✌️');
+      } catch (e) {
+        console.log(e);
       }
-    }
-  }
-
-  const pickImage = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-      });
-      if (!result.cancelled) {
-        setImage(result.uri);
-      }
-    } catch (error) {
-      console.error("Error al seleccionar una imagen:", error);
     }
   };
 
-  if(hasCameraPermission === false){
-    return <Text>No has proporcionado los permisos a la camara. </Text>
+  const openImagePicker = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.uri);
+    }
+  };
+
+  // Verificar si hay una imagen seleccionada para mostrar automáticamente
+  useEffect(() => {
+    if (selectedImage) {
+      setImage(selectedImage);
+    }
+  }, [selectedImage]);
+
+  if (hasCameraPermission === false) {
+    return <Text>No has proporcionado los permisos a la cámara. </Text>;
   }
 
-  return(
+  return (
     <View style={styles.container}>
-      {!image ?
-      <Camera
-      style={styles.camera}
-      type={type}
-      flashMode={flash}
-      ref={cameraRef}
-      >
-      <View style={styles.button2}>
-        <CameraButtons icon={'flash'}
-          color={flash === Camera.Constants.FlashMode.off ? 'black' : '#f1f1f1'}
-          onPress={()=>{
-          setFlash(flash === Camera.Constants.FlashMode.off 
-            ? Camera.Constants.FlashMode.on
-            : Camera.Constants.FlashMode.off)
-        }}/>
-      </View>
-      </Camera>
-      :
-      <Image source={{uri: image}} style={styles.camera}/>
-      }
+      {!image ? (
+        <Camera
+          style={styles.camera}
+          type={type}
+          flashMode={flash}
+          ref={cameraRef}
+        >
+          <View style={styles.button2}>
+            <CameraButtons icon={'flash'}
+              color={flash === Camera.Constants.FlashMode.off ? 'black' : '#f1f1f1'}
+              onPress={() => {
+                setFlash(flash === Camera.Constants.FlashMode.off
+                  ? Camera.Constants.FlashMode.on
+                  : Camera.Constants.FlashMode.off)
+              }} />
+          </View>
+        </Camera>
+      ) : (
+        <Image source={{ uri: image }} style={styles.camera} />
+      )}
       <View>
-        
-        {image ?
-        <View style={styles.buttons}>
-          <CameraButtons title={"Tomar otra"} icon = "cycle" onPress={()=> setImage(null)}/>
-          <CameraButtons title={"Guardar"} icon = "check" onPress={saveImage}/>
-        </View>
-        :
-        <View>
-          <CameraButtons title={'Tomar una foto'} icon='camera' onPress={takePicture}/>
-          <CameraButtons title={'Seleccionar foto desde galeria'} icon='squared-plus' onPress={pickImage}/>
-        </View>
-        
-        }
-
+        {image ? (
+          <View style={styles.buttons3}>
+            <CameraButtons
+              icon = "cycle"
+              title="Tomar otra"
+              onPress={() => {
+                setImage(null);
+                setSelectedImage(null);
+              }}
+            />
+            <CameraButtons icon = "check" title="Guardar" onPress={saveImage} />
+          </View>
+        ) : (
+          <View style={styles.buttons}>
+            <CameraButtons title={'Tomar una foto'} icon='camera' onPress={takePicture} />
+            <CameraButtons title="Seleccionar foto desde galería" icon='squared-plus' onPress={openImagePicker} />
+          </View>
+        )}
       </View>
-      
     </View>
-  )
-}
+  );
+};
+
 const styles = ScaledSheet.create({
   
   container: {
@@ -116,12 +123,11 @@ const styles = ScaledSheet.create({
   camera: {
     flex: 1,
     margin: '10@ms',
-    marginTop: '200@ms',
-    marginBottom: '120@ms',
+    marginTop: '180@ms',
+    marginBottom: '100@ms',
     borderRadius: 20,
   },
   buttons: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 50,
   },
@@ -129,6 +135,11 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     paddingHorizontal: '10@s',
     marginTop: '10@ms'
-  }
+  },
+  buttons3: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 50,
+  },
 })
 export default Register2;
