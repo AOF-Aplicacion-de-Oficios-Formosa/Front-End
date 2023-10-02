@@ -4,12 +4,11 @@ import { IconButton } from 'react-native-paper';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Input } from '@rneui/themed';
 
-const RePasswordInput = () => {
-    const [repassword, setRePassword] = useState('');
-    const [showRePassword, setShowRePassword] = useState(false);
+const PasswordInput = ({ value, onChangeText }) => {
+    const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
-        setShowRePassword(!showRePassword);
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -17,9 +16,9 @@ const RePasswordInput = () => {
             <Input
                 leftIcon={{ type: 'material-icons', name: 'lock-outline', color: "#FFFF", size: 22 }}
                 placeholder="Contraseña"
-                onChangeText={text => setRePassword(text)}
-                value={repassword}
-                secureTextEntry={!showRePassword}
+                onChangeText={onChangeText}
+                value={value}
+                secureTextEntry={!showPassword}
                 placeholderTextColor="white"
                 inputStyle={{
                     flex: 1,
@@ -29,7 +28,7 @@ const RePasswordInput = () => {
             />
             <IconButton
                 style={styles.icon}
-                icon={showRePassword ? 'eye-outline' : 'eye-off-outline'}
+                icon={showPassword ? 'eye-outline' : 'eye-off-outline'}
                 onPress={togglePasswordVisibility}
                 iconColor='white'
             />
@@ -56,4 +55,4 @@ const styles = ScaledSheet.create({
     },
 });
 
-export default RePasswordInput;
+export default PasswordInput;

@@ -2,22 +2,19 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Input } from '@rneui/base';
-import EmailInput from './Login-Register/EmailInput';
-import PasswordInput from './Login-Register/PasswordInput';
-import RePasswordInput from './Login-Register/RePasswordInput';
-import NameInput from './Login-Register/NameInput';
-import SurNameInput from './Login-Register/SurNameInput';
-import RegisterButton from './Login-Register/RegisterButton';
+import EmailInput from '../components/Login/EmailInput';
+import PasswordInput from '../components/Login/PasswordInput';
+import RePasswordInput from '../components/Register/RePasswordInput';
+import NameInput from '../components/Register/NameInput';
+import SurNameInput from '../components/Register/SurNameInput';
+import RegisterButton from '../components/Register/RegisterButton';
 
 const Register = () => {
     const [name, setName] = useState('')
     const [surName, setSurName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const handleRegister = () => {
-        console.log('Registrando:', { name, surName, email, password });
-    };
+    const [repassword, setRePassword] = useState('')
 
     return (
         <View style={styles.container}>
@@ -31,17 +28,23 @@ const Register = () => {
             >
                 <View style={styles.inputWrapper}>
                     <Text style={styles.text1}>Ingrese su nombre(s)</Text>
-                    <NameInput />
+                    <NameInput value={name} onChangeText={setName} />
                     <Text style={styles.text}>Ingrese su apellido(s)</Text>
-                    <SurNameInput />
+                    <SurNameInput value={surName} onChangeText={setSurName} />
                     <Text style={styles.text}>Ingrese su correo</Text>
-                    <EmailInput />
+                    <EmailInput value={email} onChangeText={setEmail} />
                     <Text style={styles.text}>Ingrese su contraseña</Text>
-                    <PasswordInput />
-                    <Text style={styles.text}>Ingrese de nuevo su contraseña:</Text>
-                    <RePasswordInput />
+                    <PasswordInput value={password} onChangeText={setPassword} />
+                    <Text style={styles.text}>Ingrese de nuevo su contraseña</Text>
+                    <RePasswordInput value={repassword} onChangeText={setRePassword}/>
                 </View>
-                <RegisterButton/>
+                <RegisterButton 
+                    name={name}
+                    surName={surName}
+                    email={email}
+                    password={password}
+                    repassword={repassword}
+                />
                 <Image source={require('../../assets/img/empleo-blanco.png')} style={styles.footer} />
             </ScrollView>
         </View>

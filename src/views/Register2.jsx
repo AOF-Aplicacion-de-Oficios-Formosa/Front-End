@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
-import { View, Text, Image, Button } from 'react-native';
-import CameraButtons from './Login-Register/CameraButtons';
+import { View, Text, Image } from 'react-native';
+import OpenSettings from 'react-native-open-settings';
+import CameraButtons from '../components/Register/CameraButtons';
 import { ScaledSheet } from 'react-native-size-matters';
-import { launchCamera } from 'react-native-image-picker';
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -54,6 +54,9 @@ const Register2 = () => {
     if (!result.canceled) {
       setSelectedImage(result.uri);
     }
+    else{
+      alert('No se seleccionó ninguna foto.😒')
+    }
   };
 
   // Verificar si hay una imagen seleccionada para mostrar automáticamente
@@ -63,9 +66,33 @@ const Register2 = () => {
     }
   }, [selectedImage]);
 
-  if (hasCameraPermission === false) {
-    return <Text>No has proporcionado los permisos a la cámara. </Text>;
-  }
+  useEffect(() => {
+    (async () => {
+      const cameraStatus = await Camera.requestCameraPermissionsAsync();
+
+      if (cameraStatus.status === 'granted') {
+        setHasCameraPermission(true);
+      } else {
+        try {
+          const newCameraStatus = await Camera.requestCameraPermissionsAsync();
+          if (newCameraStatus.status === 'granted') {
+            setHasCameraPermission(true);
+          } else {
+            alert('Permiso de cámara requerido', 'Por favor, permite el acceso a la cámara en la configuración de tu dispositivo.', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  OpenSettings.openSettings();
+                },
+              },
+            ]);
+          }
+        } catch (error) {
+          console.log('Error al solicitar permiso de cámara:', error);
+        }
+      }
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>

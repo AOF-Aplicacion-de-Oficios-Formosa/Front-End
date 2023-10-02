@@ -11,14 +11,12 @@ export default function Home() {
                 source={require('../../assets/img/LOGO-AOF-BLANCO.png')}
                 style={styles.image}
             />
-            <Text style={styles.text}>Bienvenid@ a Oficios Formosa!</Text>
+            <Text style={styles.text}>Bienvenid@</Text>
             <ScrollView>
                 <View style={styles.card}>
                     <Cards />
                 </View>
             </ScrollView>
-
-
         </View>
     );
 }
