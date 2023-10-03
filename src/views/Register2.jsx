@@ -6,6 +6,8 @@ import { View, Text, Image } from 'react-native';
 import OpenSettings from 'react-native-open-settings';
 import CameraButtons from '../components/Register/CameraButtons';
 import { ScaledSheet } from 'react-native-size-matters';
+import { AppState } from 'react-native';
+
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -54,7 +56,7 @@ const Register2 = () => {
     if (!result.canceled) {
       setSelectedImage(result.uri);
     }
-    else{
+    else {
       alert('No se seleccionó ninguna foto.😒')
     }
   };
@@ -120,14 +122,14 @@ const Register2 = () => {
         {image ? (
           <View style={styles.buttons3}>
             <CameraButtons
-              icon = "cycle"
+              icon="cycle"
               title="Tomar otra"
               onPress={() => {
                 setImage(null);
                 setSelectedImage(null);
               }}
             />
-            <CameraButtons icon = "check" title="Guardar" onPress={saveImage} />
+            <CameraButtons icon="check" title="Guardar" onPress={saveImage} />
           </View>
         ) : (
           <View style={styles.buttons}>
@@ -141,7 +143,7 @@ const Register2 = () => {
 };
 
 const styles = ScaledSheet.create({
-  
+
   container: {
     flex: 1,
     backgroundColor: 'rgba(2,96,182,1)',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image, Modal, TouchableOpacity } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Input } from '@rneui/base';
 import EmailInput from '../components/Login/EmailInput';
@@ -9,12 +9,14 @@ import NameInput from '../components/Register/NameInput';
 import SurNameInput from '../components/Register/SurNameInput';
 import RegisterButton from '../components/Register/RegisterButton';
 
+
 const Register = () => {
     const [name, setName] = useState('')
     const [surName, setSurName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repassword, setRePassword] = useState('')
+
 
     return (
         <View style={styles.container}>
@@ -36,9 +38,9 @@ const Register = () => {
                     <Text style={styles.text}>Ingrese su contraseña</Text>
                     <PasswordInput value={password} onChangeText={setPassword} />
                     <Text style={styles.text}>Ingrese de nuevo su contraseña</Text>
-                    <RePasswordInput value={repassword} onChangeText={setRePassword}/>
+                    <RePasswordInput value={repassword} onChangeText={setRePassword} />
                 </View>
-                <RegisterButton 
+                <RegisterButton
                     name={name}
                     surName={surName}
                     email={email}
@@ -109,7 +111,7 @@ const styles = ScaledSheet.create({
         marginVertical: 5,
         marginLeft: '10@ms',
         marginRight: '10@ms'
-    }
+    },
 });
 
 export default Register;
