@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, Text, View, Modal, Button } from 'react-native'; // Importa Modal y Button
+import { TouchableOpacity, Text, View, Modal, Button } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-
-
 
 const RegisterButton = ({ name, surName, email, password, repassword }) => {
     const navigation = useNavigation();
@@ -14,18 +11,19 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
     const handleRegisterSuccess = (serverMessage) => {
         setModalMessage(serverMessage);
         setModalVisible(true);
-        // Puedes agregar cualquier otra acción que desees después de un registro exitoso
-        navigation.navigate('register2');
+        setTimeout(() => {
+            navigation.navigate('register2');
+        }, 3000);
     };
 
     const handleRegisterError = (errorMessage) => {
-        setModalMessage(`Error al registrar usuario: ${errorMessage}`);
+        setModalMessage(`${errorMessage}`);
         setModalVisible(true);
     };
 
     const handleRegister = async () => {
         try {
-            const url = "http://192.168.217.186:4000/register";
+            const url = "http://192.168.1.11:4000/register";
             const data = {
                 name: name,
                 surName: surName,
@@ -34,24 +32,23 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
                 repassword: repassword,
             };
 
-            const res = await axios.post(url, data);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data), // Convierte el objeto a JSON antes de enviarlo
+            });
 
-            if (res.data.ok) {
-                handleRegisterSuccess(res.data.msg);
+            const res = await response.json();
+
+            if (res.ok && res.msg) {
+                handleRegisterSuccess(res.msg);
             } else {
-                handleRegisterError(res.data.msg);
+                handleRegisterError(res.error); // Utiliza la propiedad 'error' del objeto de respuesta en caso de error
             }
         } catch (error) {
-
-            const texto = error.toString()
-            const arr = texto.split(" ")
-            console.log(arr)
-            if (arr[arr.length - 1] === "400") {
-                return handleRegisterError("Credenciales inválidas");
-            }
-
-
-            handleRegisterError(error);
+            handleRegisterError(error.message);
         }
     };
 
