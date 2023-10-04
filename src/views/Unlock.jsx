@@ -13,15 +13,21 @@ const Unlock = ({ navigation }) => {
 
     const authenticateWithBiometrics = async () => {
         try {
-            const { success } = await LocalAuthentication.authenticateAsync({
-                promptMessage: 'Utilice su huella dactilar o su PIN',
-            });
+            const isBiometricsAvailable = await LocalAuthentication.hasHardwareAsync() && await LocalAuthentication.isEnrolledAsync();
 
-            if (success) {
-                setAuthenticationStatus('success');
-                navigation.replace('home');
+            if (isBiometricsAvailable) {
+                const { success } = await LocalAuthentication.authenticateAsync({
+                    promptMessage: 'Utilice su huella dactilar o su PIN',
+                });
+                if (success) {
+                    setAuthenticationStatus('success');
+                    navigation.replace('home');
+                } else {
+                    setAuthenticationStatus('failure');
+                }
             } else {
-                setAuthenticationStatus('failure');
+                // No hay datos biométricos configurados, navega directamente a 'home'
+                navigation.replace('home');
             }
         } catch (error) {
             console.log('Error en la autenticación biométrica:', error);
@@ -53,6 +59,7 @@ const Unlock = ({ navigation }) => {
                                     icon={'fingerprint'}
                                     iconColor='#faf7ca'
                                     size={100}
+                                    onPress={authenticateWithBiometrics}
                                 />
                             </TouchableOpacity>
                             <Text style={styles.text}>
