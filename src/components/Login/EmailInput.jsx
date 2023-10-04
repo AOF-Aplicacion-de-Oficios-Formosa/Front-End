@@ -4,16 +4,17 @@ import { Input } from '@rneui/themed';
 import { ScaledSheet } from 'react-native-size-matters';
 
 
-const EmailInput = () => {
+const EmailInput = ({ value, onChangeText }) => {
     const [email, setEmail] = useState('');
 
     return (
         <View style={styles.inputContainer}>
             <Input
-                leftIcon={{type: 'font-awesome-5', name: 'at', color: "#FFFF", size: 22  }}
+                leftIcon={{ type: 'font-awesome-5', name: 'at', color: "#FFFF", size: 22 }}
                 placeholder='Email'
-                value={email}
-                onChangeText={text => setEmail(text)}
+                name="email"
+                value={value}
+                onChangeText={onChangeText}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}

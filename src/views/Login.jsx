@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
-import EmailInput from './Login-Register/EmailInput.jsx';
-import PasswordInput from './Login-Register/PasswordInput.jsx';
-import LoginButton from './Login-Register/LoginButton.jsx';
-import Addons from './Login-Register/Addons.jsx';
+import EmailInput from '../components/Login/EmailInput.jsx';
+import PasswordInput from '../components/Login/PasswordInput.jsx';
+import LoginButton from '../components/Login/LoginButton.jsx';
+import Addons from '../components/Login/Addons.jsx';
 
 
 const Login = ({navigation}) => {

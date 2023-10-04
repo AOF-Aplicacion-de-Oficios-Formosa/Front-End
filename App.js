@@ -17,7 +17,6 @@ export default function App() {
   }
 
   loadFonts();
-  // instanciamos nuestro Stack que nos ayudara para crear la navegacion y las pantallas
   const Stack = createNativeStackNavigator();
 
   return (
