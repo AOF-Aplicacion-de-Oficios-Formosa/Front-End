@@ -23,7 +23,7 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
 
     const handleRegister = async () => {
         try {
-            const url = "http://192.168.1.11:4000/register";
+            const url = "http://192.168.217.219:4000/register";
             const data = {
                 name: name,
                 surName: surName,
@@ -71,10 +71,15 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         <Text style={styles.modalText}>{modalMessage}</Text>
-                        <Button
-                            title="Cerrar"
+                        <TouchableOpacity
+                            title="Registrar"
                             onPress={() => setModalVisible(false)}
-                        />
+                            style={styles.button2}
+                        >
+                            <Text style={styles.buttonText}>
+                                Cerrar
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
@@ -95,6 +100,13 @@ const styles = ScaledSheet.create({
         alignItems: 'center',
         marginTop: 10,
     },
+    button2: {
+        backgroundColor: 'black',
+        borderRadius: 20,
+        width: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     buttonText: {
         fontSize: 16,
         fontWeight: 'bold',
@@ -108,7 +120,7 @@ const styles = ScaledSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
         padding: '20@ms',
         borderRadius: '10@ms',
         alignItems: 'center',

@@ -5,9 +5,10 @@ import * as MediaLibrary from 'expo-media-library';
 import { View, Text, Image } from 'react-native';
 import OpenSettings from 'react-native-open-settings';
 import CameraButtons from '../components/Register/CameraButtons';
+import SelectDropdown from 'react-native-select-dropdown'
 import { ScaledSheet } from 'react-native-size-matters';
-import { AppState } from 'react-native';
 
+const categories = "http://192.168.217.219:4000/category"
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -98,6 +99,23 @@ const Register2 = () => {
 
   return (
     <View style={styles.container}>
+      <SelectDropdown
+        data={categories}
+        onSelect={(selectedItem, index) => {
+          console.log(selectedItem, index)
+        }}
+        buttonTextAfterSelection={(selectedItem, index) => {
+
+          return selectedItem
+        }}
+        rowTextForSelection={(item, index) => {
+
+          return item
+        }}
+        style={selectDropdownStyles.container}
+        dropdownStyle={selectDropdownStyles.dropdownContainer}
+      />
+
       {!image ? (
         <Camera
           style={styles.camera}
@@ -171,4 +189,22 @@ const styles = ScaledSheet.create({
     paddingHorizontal: 50,
   },
 })
+
+const selectDropdownStyles = ScaledSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(2,96,182,1)',
+    justifyContent: 'center',
+    marginLeft: 100
+  },
+  dropdownContainer: {
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 8,
+    backgroundColor: 'white',
+    marginTop: 10,
+    marginLeft: 100,
+    marginRight: 100
+  },
+});
 export default Register2;
