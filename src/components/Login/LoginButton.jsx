@@ -10,7 +10,7 @@ const LoginButton = ({ auth }) => {
 
     const handleLogin = async () => {
         try {
-            const url = "http://192.168.217.219:4000/login";
+            const url = "http://192.168.1.16:4000/login";
             const data = {
                 email: auth.email,
                 password: auth.password,
