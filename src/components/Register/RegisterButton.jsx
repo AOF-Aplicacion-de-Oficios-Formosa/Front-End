@@ -11,9 +11,7 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
     const handleRegisterSuccess = (serverMessage) => {
         setModalMessage(serverMessage);
         setModalVisible(true);
-        setTimeout(() => {
-            navigation.navigate('register2');
-        }, 3000);
+        navigation.navigate('register2'); // Puedes agregar cualquier otra acción que desees después de un registro exitoso
     };
 
     const handleRegisterError = (errorMessage) => {
@@ -23,7 +21,7 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
 
     const handleRegister = async () => {
         try {
-            const url = "http://192.168.217.219:4000/register";
+            const url = "http://192.168.1.16:4000/register";
             const data = {
                 name: name,
                 surName: surName,
@@ -31,21 +29,21 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
                 password: password,
                 repassword: repassword,
             };
-
+    
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data), // Convierte el objeto a JSON antes de enviarlo
+                body: JSON.stringify(data), // Convierte los datos a JSON
             });
-
+    
             const res = await response.json();
-
-            if (res.ok && res.msg) {
+    
+            if (res.ok) {
                 handleRegisterSuccess(res.msg);
             } else {
-                handleRegisterError(res.error); // Utiliza la propiedad 'error' del objeto de respuesta en caso de error
+                handleRegisterError(res.error); // Utiliza el error del servidor en lugar de "Credenciales inválidas"
             }
         } catch (error) {
             handleRegisterError(error.message);
