@@ -10,7 +10,7 @@ const LoginButton = ({ auth }) => {
 
     const handleLogin = async () => {
         try {
-            const url = "http://192.168.217.219:4000/login";
+            const url = "http://192.168.137.1:4000/login";
             const data = {
                 email: auth.email,
                 password: auth.password,
@@ -24,7 +24,7 @@ const LoginButton = ({ auth }) => {
             });
             const res = await response.json();
             if (res.ok) {
-                navigation.navigate('register2');
+                navigation.navigate('search');
             } else {
                 // Mostrar el mensaje de error en el modal
                 setErrorMessage(res.msg);
