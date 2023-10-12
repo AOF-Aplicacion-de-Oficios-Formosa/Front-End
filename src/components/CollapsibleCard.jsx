@@ -5,7 +5,6 @@ import { Entypo } from '@expo/vector-icons';
 const CollapsibleCard = ({ title, description }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const cardHeight = isExpanded ? 200 : 100;
     const icon = isExpanded ? 'chevron-small-up' : 'chevron-small-down';
 
     const onPress = () => {
@@ -13,7 +12,7 @@ const CollapsibleCard = ({ title, description }) => {
     };
 
     return (
-        <View style={[styles.card, { height: cardHeight }]}>
+        <View style={[styles.card]}>
             <TouchableOpacity onPress={onPress}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>{title}</Text>
@@ -21,9 +20,11 @@ const CollapsibleCard = ({ title, description }) => {
                 </View>
             </TouchableOpacity>
 
-            <View style={[styles.description, { height: cardHeight }]}>
-                <Text style={styles.descriptionText}>{description}</Text>
-            </View>
+            {isExpanded && (
+                <View style={[styles.description]}>
+                    <Text style={styles.descriptionText}>{description}</Text>
+                </View>
+            )}
         </View>
     );
 };
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: 30,
-        fontFamily: 'Product-Sans'
+        fontFamily: 'Product-Sans',
     },
     description: {
         padding: 15,
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     descriptionText: {
         fontSize: 20,
         fontFamily: 'Product-Sans',
-        marginTop: 20
+        margin: 10,
     },
 });
 

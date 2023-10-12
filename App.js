@@ -7,6 +7,7 @@ import Register from './src/views/Register.jsx';
 import Register2 from './src/views/Register2.jsx';
 import Unlock from './src/views/Unlock.jsx';
 import Search from './src/views/Search.jsx';
+import Tabs from './src/components/Tabs.jsx';
 import { AppRegistry } from 'react-native';
 import * as Font from 'expo-font';
 
@@ -25,6 +26,7 @@ export default function App() {
   return (
     <>
       <NavigationContainer>
+        
         <Stack.Navigator initialRouteName="unlock">
           <Stack.Screen name="home" options={{ headerShown: false, gestureEnabled: false }} component={Home} />
           <Stack.Screen name="login" options={{ headerShown: false }} component={Login} />
