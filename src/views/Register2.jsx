@@ -7,8 +7,7 @@ import OpenSettings from 'react-native-open-settings';
 import CameraButtons from '../components/Register/CameraButtons';
 import SelectDropdown from 'react-native-select-dropdown'
 import { ScaledSheet } from 'react-native-size-matters';
-
-const categories = "http://192.168.217.219:4000/category"
+import url from './../components/url';
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -107,13 +106,13 @@ const Register2 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://192.168.137.1:4000/category');
+        const response = await fetch(url + '/category');
         const data = await response.json();
-  
+
         // Filtrar categorías con nombres definidos antes de ordenar
         const categoriesWithNames = data.filter(category => category.name);
         const sortedCategories = categoriesWithNames.sort((a, b) => a.name.localeCompare(b.name));
-  
+
         // Extraer los nombres de las categorías ordenadas y establecerlos en el estado
         const categoryNames = sortedCategories.map((category) => category.name);
         setCategories(categoryNames);
@@ -121,7 +120,7 @@ const Register2 = () => {
         console.error('Error al obtener datos de categorías:', error);
       }
     };
-  
+
     // Llamar a la función fetchData para obtener y ordenar las categorías
     fetchData();
   }, []);
@@ -129,81 +128,81 @@ const Register2 = () => {
   return (
     <View style={styles.container}>
       <View style={styles.inputWrapper}>
-      <Text style={styles.text}>
-  ¿Qué ofreces?
-</Text>
-<Text style={styles.text2}>
-  1. Sube una foto de tu certificado.
-</Text>
-<Text style={styles.text2}>
-  2. Selecciona la categoría a la cual pertenece tu certificado y quieres ofrecer.
-</Text>
-<Text style={styles.text2}>
-  3. Presiona "Enviar" y espera a que habilitemos tu cuenta.
-</Text>
+        <Text style={styles.text}>
+          ¿Qué ofreces?
+        </Text>
+        <Text style={styles.text2}>
+          1. Sube una foto de tu certificado.
+        </Text>
+        <Text style={styles.text2}>
+          2. Selecciona la categoría a la cual pertenece tu certificado y quieres ofrecer.
+        </Text>
+        <Text style={styles.text2}>
+          3. Presiona "Enviar" y espera a que habilitemos tu cuenta.
+        </Text>
 
       </View>
-        {!image ? (
-          <Camera
-            style={styles.camera}
-            type={type}
-            flashMode={flash}
-            ref={cameraRef}
-          >
-            <View style={styles.button2}>
-              <CameraButtons icon={'flash'}
-                color={flash === Camera.Constants.FlashMode.off ? 'black' : '#f1f1f1'}
-                onPress={() => {
-                  setFlash(flash === Camera.Constants.FlashMode.off
-                    ? Camera.Constants.FlashMode.on
-                    : Camera.Constants.FlashMode.off)
-                }} />
-            </View>
-          </Camera>
+      {!image ? (
+        <Camera
+          style={styles.camera}
+          type={type}
+          flashMode={flash}
+          ref={cameraRef}
+        >
+          <View style={styles.button2}>
+            <CameraButtons icon={'flash'}
+              color={flash === Camera.Constants.FlashMode.off ? 'black' : '#f1f1f1'}
+              onPress={() => {
+                setFlash(flash === Camera.Constants.FlashMode.off
+                  ? Camera.Constants.FlashMode.on
+                  : Camera.Constants.FlashMode.off)
+              }} />
+          </View>
+        </Camera>
+      ) : (
+        <Image source={{ uri: image }} style={styles.camera} />
+      )}
+      <View>
+        {image ? (
+          <View style={styles.buttons3}>
+            <CameraButtons
+              icon="cycle"
+              title="Tomar otra"
+              onPress={() => {
+                setImage(null);
+                setSelectedImage(null);
+              }}
+            />
+            <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={saveImage} />
+          </View>
         ) : (
-          <Image source={{ uri: image }} style={styles.camera} />
-        )}
-        <View>
-          {image ? (
-            <View style={styles.buttons3}>
-              <CameraButtons
-                icon="cycle"
-                title="Tomar otra"
-                onPress={() => {
-                  setImage(null);
-                  setSelectedImage(null);
+          <View style={styles.buttons}>
+            <View style={styles1.centeredContainer}>
+              <SelectDropdown
+                data={categories}
+                onSelect={(selectedItem, index) => {
+                  setSelectedCategory(selectedItem);
+                  console.log(`Categoría seleccionada: ${selectedItem}`);
                 }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return selectedItem;
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item;
+                }}
+                style={styles.selectDropdown}
+                dropdownStyle={styles.dropdownContainer}
+                buttonStyle={styles.selectDropdown}
+                defaultButtonText="Seleccionar Categoría"
+                buttonTextStyle={{ fontFamily: 'Product-Sans' }}
               />
-              <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={saveImage} />
             </View>
-          ) : (
-            <View style={styles.buttons}>
-              <View style={styles1.centeredContainer}>
-                <SelectDropdown
-                  data={categories}
-                  onSelect={(selectedItem, index) => {
-                    setSelectedCategory(selectedItem);
-                    console.log(`Categoría seleccionada: ${selectedItem}`);
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    return item;
-                  }}
-                  style={styles.selectDropdown}
-                  dropdownStyle={styles.dropdownContainer}
-                  buttonStyle={styles.selectDropdown}
-                  defaultButtonText="Seleccionar Categoría"
-                  buttonTextStyle={{fontFamily: 'Product-Sans'}}
-                />
-              </View>
-              <CameraButtons title={'Tomar una foto'} icon='camera' onPress={takePicture} />
-              <CameraButtons title="Seleccionar foto desde galería" icon='squared-plus' onPress={openImagePicker} />
-            </View>
-          )
-          }
-        </View>
+            <CameraButtons title={'Tomar una foto'} icon='camera' onPress={takePicture} />
+            <CameraButtons title="Seleccionar foto desde galería" icon='squared-plus' onPress={openImagePicker} />
+          </View>
+        )
+        }
+      </View>
     </View>
   );
 };
@@ -237,23 +236,23 @@ const styles = ScaledSheet.create({
     paddingHorizontal: 50,
   },
   selectDropdown: {
-    borderRadius: 15, // Radio de borde del contenedor del desplegable
+    borderRadius: 15,
     width: '100%',
     height: 35,
     backgroundColor: 'rgba(255, 255, 255, 0.9)'
   },
   dropdownContainer: {
-    borderRadius: 10, // Radio de borde del contenedor del desplegable
-    borderWidth: 1, // Agrega un borde para enfatizar el redondeo
-    borderColor: 'gray', // Color del borde
-  }, // Radio de borde del contenedor del desplegable
+    borderRadius: 10, 
+    borderWidth: 1,
+    borderColor: 'gray', 
+  }, 
   text: {
     marginLeft: '20@ms',
     fontFamily: 'Product-Sans',
     fontSize: 45,
     color: '#FFFF',
     borderColor: '#000000',
-    marginTop:'5@ms'
+    marginTop: '5@ms'
   },
   text2: {
     marginLeft: '20@ms',

@@ -25,7 +25,7 @@ const LoginButton = ({ auth }) => {
             });
             const res = await response.json();
             if (res.ok) {
-                navigation.navigate('register2');
+                navigation.navigate('search');
             } else {
                 // Mostrar el mensaje de error en el modal
                 setErrorMessage(res.msg);
