@@ -152,3 +152,4 @@ const styles = ScaledSheet.create({
 });
 
 export default Search;
+

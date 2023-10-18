@@ -11,6 +11,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@expo/webpack-config": "^19.0.0",
+    "@react-navigation/bottom-tabs": "^6.5.9",
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/native-stack": "^6.9.14",
     "@rneui/base": "github:react-native-elements/react-native-elements#c5355315",
@@ -36,6 +37,7 @@
     "react-native-modal": "^13.0.1",
     "react-native-open-settings": "^1.0.1",
     "react-native-paper": "^5.10.3",
+    "react-native-reanimated": "~3.3.0",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-select-dropdown": "^3.4.0",

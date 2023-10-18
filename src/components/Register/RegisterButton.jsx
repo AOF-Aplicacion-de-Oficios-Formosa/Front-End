@@ -30,7 +30,6 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
                 password: password,
                 repassword: repassword,
             };
-    
             const response = await fetch(register, {
                 method: 'POST',
                 headers: {

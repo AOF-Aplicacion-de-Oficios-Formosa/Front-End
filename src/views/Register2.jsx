@@ -8,7 +8,7 @@ import CameraButtons from '../components/Register/CameraButtons';
 import SelectDropdown from 'react-native-select-dropdown'
 import { ScaledSheet } from 'react-native-size-matters';
 
-const categories = "http://192.168.217.219:4000/category"
+const categories = "http://192.168.137.1:4000/category"
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
