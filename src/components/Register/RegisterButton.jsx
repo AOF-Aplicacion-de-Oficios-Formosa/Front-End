@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TouchableOpacity, Text, View, Modal, Button } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import url from '../url';
 
 const RegisterButton = ({ name, surName, email, password, repassword }) => {
     const navigation = useNavigation();
@@ -21,7 +22,7 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
 
     const handleRegister = async () => {
         try {
-            const url = "http://192.168.1.16:4000/register";
+            const register = url+'register';
             const data = {
                 name: name,
                 surName: surName,
@@ -30,7 +31,7 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
                 repassword: repassword,
             };
     
-            const response = await fetch(url, {
+            const response = await fetch(register, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
