@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TouchableOpacity, Text, View, Modal, Button } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import url from '../url';
 
 const LoginButton = ({ auth }) => {
     const navigation = useNavigation();
@@ -10,12 +11,12 @@ const LoginButton = ({ auth }) => {
 
     const handleLogin = async () => {
         try {
-            const url = "http://192.168.137.1:4000/login";
+            const login = url+'/login';
             const data = {
                 email: auth.email,
                 password: auth.password,
             };
-            const response = await fetch(url, {
+            const response = await fetch(login, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
