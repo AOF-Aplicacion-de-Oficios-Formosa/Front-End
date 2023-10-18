@@ -8,7 +8,7 @@ const SurNameInput = ({ value, onChangeText }) => {
     return (
         <View style={styles.inputContainer}>
             <Input
-                leftIcon={{type: 'material-icons', name: 'badge', color: "#FFFF", size: 22}}
+                leftIcon={{type: 'material-community', name: 'badge-account-outline', color: "#FFFF", size: 22}}
                 placeholder="Apellido(s)"
                 value={value}
                 onChangeText={onChangeText}

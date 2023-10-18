@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, StyleSheet, } from 'react-native';
 import OpenSettings from 'react-native-open-settings';
 import CameraButtons from '../components/Register/CameraButtons';
+import SelectDropdown from 'react-native-select-dropdown'
 import { ScaledSheet } from 'react-native-size-matters';
-import { AppState } from 'react-native';
-
+import url from './../components/url';
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -16,6 +16,8 @@ const Register2 = () => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const cameraRef = useRef(null);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -28,7 +30,12 @@ const Register2 = () => {
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
-        const options = { quality: 0.5, base64: true };
+        const options = {
+          quality: 0.9,
+          base64: true,
+          aspect: [4, 3],
+          allowsEditing: true
+        };
         const data = await cameraRef.current.takePictureAsync(options);
         setImage(data.uri);
       } catch (e) {
@@ -96,8 +103,45 @@ const Register2 = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url + '/category');
+        const data = await response.json();
+
+        // Filtrar categorías con nombres definidos antes de ordenar
+        const categoriesWithNames = data.filter(category => category.name);
+        const sortedCategories = categoriesWithNames.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Extraer los nombres de las categorías ordenadas y establecerlos en el estado
+        const categoryNames = sortedCategories.map((category) => category.name);
+        setCategories(categoryNames);
+      } catch (error) {
+        console.error('Error al obtener datos de categorías:', error);
+      }
+    };
+
+    // Llamar a la función fetchData para obtener y ordenar las categorías
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.container}>
+      <View style={styles.inputWrapper}>
+        <Text style={styles.text}>
+          ¿Qué ofreces?
+        </Text>
+        <Text style={styles.text2}>
+          1. Sube una foto de tu certificado.
+        </Text>
+        <Text style={styles.text2}>
+          2. Selecciona la categoría a la cual pertenece tu certificado y quieres ofrecer.
+        </Text>
+        <Text style={styles.text2}>
+          3. Presiona "Enviar" y espera a que habilitemos tu cuenta.
+        </Text>
+
+      </View>
       {!image ? (
         <Camera
           style={styles.camera}
@@ -129,14 +173,35 @@ const Register2 = () => {
                 setSelectedImage(null);
               }}
             />
-            <CameraButtons icon="check" title="Guardar" onPress={saveImage} />
+            <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={saveImage} />
           </View>
         ) : (
           <View style={styles.buttons}>
+            <View style={styles1.centeredContainer}>
+              <SelectDropdown
+                data={categories}
+                onSelect={(selectedItem, index) => {
+                  setSelectedCategory(selectedItem);
+                  console.log(`Categoría seleccionada: ${selectedItem}`);
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return selectedItem;
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item;
+                }}
+                style={styles.selectDropdown}
+                dropdownStyle={styles.dropdownContainer}
+                buttonStyle={styles.selectDropdown}
+                defaultButtonText="Seleccionar Categoría"
+                buttonTextStyle={{ fontFamily: 'Product-Sans' }}
+              />
+            </View>
             <CameraButtons title={'Tomar una foto'} icon='camera' onPress={takePicture} />
             <CameraButtons title="Seleccionar foto desde galería" icon='squared-plus' onPress={openImagePicker} />
           </View>
-        )}
+        )
+        }
       </View>
     </View>
   );
@@ -152,8 +217,8 @@ const styles = ScaledSheet.create({
   camera: {
     flex: 1,
     margin: '10@ms',
-    marginTop: '180@ms',
-    marginBottom: '100@ms',
+    marginTop: '10@ms',
+    marginBottom: '40@ms',
     borderRadius: 20,
   },
   buttons: {
@@ -163,12 +228,62 @@ const styles = ScaledSheet.create({
   button2: {
     flexDirection: 'row',
     paddingHorizontal: '10@s',
-    marginTop: '10@ms'
+    marginTop: '10@ms',
   },
   buttons3: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 50,
   },
-})
+  selectDropdown: {
+    borderRadius: 15,
+    width: '100%',
+    height: 35,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)'
+  },
+  dropdownContainer: {
+    borderRadius: 10, 
+    borderWidth: 1,
+    borderColor: 'gray', 
+  }, 
+  text: {
+    marginLeft: '20@ms',
+    fontFamily: 'Product-Sans',
+    fontSize: 45,
+    color: '#FFFF',
+    borderColor: '#000000',
+    marginTop: '5@ms'
+  },
+  text2: {
+    marginLeft: '20@ms',
+    fontFamily: 'Product-Sans',
+    fontSize: 20,
+    color: '#FFFF',
+    borderColor: '#000000',
+    marginTop: '5@ms',
+    marginBottom: '5@ms'
+  },
+  inputWrapper: {
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginTop: '35@ms',
+    marginLeft: '10@ms',
+    marginRight: '10@ms',
+  },
+});
+
+const styles1 = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(2,96,182,1)',
+    justifyContent: 'center',
+
+  },
+  centeredContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: -30,
+  },
+  // Resto de tus definiciones de estilo
+});
 export default Register2;

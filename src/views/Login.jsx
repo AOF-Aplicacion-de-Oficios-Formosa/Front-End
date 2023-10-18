@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import EmailInput from '../components/Login/EmailInput.jsx';
 import PasswordInput from '../components/Login/PasswordInput.jsx';
 import LoginButton from '../components/Login/LoginButton.jsx';
 import Addons from '../components/Login/Addons.jsx';
+import { useNavigation } from '@react-navigation/native';
 
+const Login = () => {
+    const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-const Login = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
@@ -20,12 +24,14 @@ const Login = ({navigation}) => {
             >
                 <View style={styles.inputWrapper}>
                     <Text style={styles.text}>Ingrese su correo:</Text>
-                    <EmailInput />
+                    <EmailInput onChangeText={setEmail} />
                     <Text style={styles.text2}>Ingrese su contraseña:</Text>
-                    <PasswordInput />
+                    <PasswordInput onChangeText={setPassword} />
                     <Addons />
                 </View>
-                <LoginButton />
+                <LoginButton
+                    auth={{ email, password }}
+                />
                 <View style={styles.inlineTextContainer}>
                     <Text style={styles.noAccountText}>
                         ¿No tienes una cuenta?
@@ -39,7 +45,6 @@ const Login = ({navigation}) => {
                 </View>
                 <Image source={require('../../assets/img/empleo-blanco.png')} style={styles.footer} />
             </ScrollView>
-
         </View>
     );
 }

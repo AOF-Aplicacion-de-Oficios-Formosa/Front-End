@@ -10,8 +10,8 @@ const EmailInput = ({ value, onChangeText }) => {
     return (
         <View style={styles.inputContainer}>
             <Input
-                leftIcon={{ type: 'font-awesome-5', name: 'at', color: "#FFFF", size: 22 }}
-                placeholder='Email'
+                leftIcon={{ type: 'material-icons', name: 'alternate-email', color: "#FFFF", size: 22 }}
+                placeholder='aof@email.com'
                 name="email"
                 value={value}
                 onChangeText={onChangeText}

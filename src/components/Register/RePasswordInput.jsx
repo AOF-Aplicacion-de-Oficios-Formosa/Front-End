@@ -16,7 +16,7 @@ const RePasswordInput = ({value, onChangeText}) => {
         <View style={styles.inputContainer}>
             <Input
                 leftIcon={{ type: 'material-icons', name: 'lock-outline', color: "#FFFF", size: 22 }}
-                placeholder="Contraseña"
+                placeholder="******"
                 onChangeText={onChangeText}
                 value={value}
                 secureTextEntry={!showRePassword}

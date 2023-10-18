@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TouchableOpacity, Text, View, Modal, Button } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import url from '../url';
 
 const RegisterButton = ({ name, surName, email, password, repassword }) => {
     const navigation = useNavigation();
@@ -11,9 +12,7 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
     const handleRegisterSuccess = (serverMessage) => {
         setModalMessage(serverMessage);
         setModalVisible(true);
-        setTimeout(() => {
-            navigation.navigate('register2');
-        }, 3000);
+        navigation.navigate('register2'); // Puedes agregar cualquier otra acción que desees después de un registro exitoso
     };
 
     const handleRegisterError = (errorMessage) => {
@@ -23,7 +22,7 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
 
     const handleRegister = async () => {
         try {
-            const url = "http://192.168.1.11:4000/register";
+            const register = url+'/register';
             const data = {
                 name: name,
                 surName: surName,
@@ -31,21 +30,20 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
                 password: password,
                 repassword: repassword,
             };
-
-            const response = await fetch(url, {
+            const response = await fetch(register, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data), // Convierte el objeto a JSON antes de enviarlo
+                body: JSON.stringify(data), // Convierte los datos a JSON
             });
-
+    
             const res = await response.json();
-
-            if (res.ok && res.msg) {
+    
+            if (res.ok) {
                 handleRegisterSuccess(res.msg);
             } else {
-                handleRegisterError(res.error); // Utiliza la propiedad 'error' del objeto de respuesta en caso de error
+                handleRegisterError(res.error); // Utiliza el error del servidor en lugar de "Credenciales inválidas"
             }
         } catch (error) {
             handleRegisterError(error.message);
@@ -71,10 +69,15 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         <Text style={styles.modalText}>{modalMessage}</Text>
-                        <Button
-                            title="Cerrar"
+                        <TouchableOpacity
+                            title="Registrar"
                             onPress={() => setModalVisible(false)}
-                        />
+                            style={styles.button2}
+                        >
+                            <Text style={styles.buttonText}>
+                                Cerrar
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
@@ -95,6 +98,13 @@ const styles = ScaledSheet.create({
         alignItems: 'center',
         marginTop: 10,
     },
+    button2: {
+        backgroundColor: 'black',
+        borderRadius: 20,
+        width: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     buttonText: {
         fontSize: 16,
         fontWeight: 'bold',
@@ -108,7 +118,7 @@ const styles = ScaledSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
         padding: '20@ms',
         borderRadius: '10@ms',
         alignItems: 'center',
