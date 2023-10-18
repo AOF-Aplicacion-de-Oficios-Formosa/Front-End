@@ -7,7 +7,6 @@ import Register from './src/views/Register.jsx';
 import Register2 from './src/views/Register2.jsx';
 import Unlock from './src/views/Unlock.jsx';
 import Search from './src/views/Search.jsx';
-import Tabs from './src/components/Tabs.jsx';
 import { AppRegistry } from 'react-native';
 import * as Font from 'expo-font';
 

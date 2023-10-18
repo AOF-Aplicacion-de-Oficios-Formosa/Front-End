@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import url from '../components/url';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,7 @@ const Search = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://192.168.137.1:4000/category');
+                const response = await fetch(url+'/category');
                 if (response.ok) {
                     const data = await response.json();
                     // Filtra las categorías sin 'name' definido
@@ -48,7 +49,7 @@ const Search = () => {
     return (
         <View style={styles.container}>
             <SearchBar
-                placeholder="Buscar categorías..."
+                placeholder="Buscar categorías"
                 onChangeText={setSearchText}
                 value={searchText}
                 containerStyle={styles.searchBarContainer}
@@ -89,12 +90,12 @@ const Search = () => {
     );
 };
 
-const CategoryList = () => {
+const CategoryList = ({filteredCategories}) => {
 
     return (
         <View style={styles.container}>
             {filteredCategories && filteredCategories.length === 0 ? (
-                <Text>No se encontraron categorías</Text>
+                <Text style={styles.text}>No se encontraron categorías</Text>
             ) : (
                 <FlatList
                     data={filteredCategories}
@@ -137,6 +138,7 @@ const styles = ScaledSheet.create({
         backgroundColor: 'white',
         borderRadius: '20@ms',
         height: '40@ms',
+        width: '200@ms',
         fontFamily: 'Product-Sans',
     },
     searchBarInput: {
@@ -148,7 +150,14 @@ const styles = ScaledSheet.create({
         borderRadius: 10,
         padding: 10
     },
-
+    text: {
+        marginLeft: '20@ms',
+        fontFamily: 'Product-Sans',
+        fontSize: 25,
+        color: '#FFFF',
+        borderColor: '#000000',
+        marginTop: '15@ms'
+    },
 });
 
 export default Search;

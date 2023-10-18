@@ -19,7 +19,6 @@ const CollapsibleCard = ({ title, description }) => {
                     <Entypo name={icon} size={24} color="black" />
                 </View>
             </TouchableOpacity>
-
             {isExpanded && (
                 <View style={[styles.description]}>
                     <Text style={styles.descriptionText}>{description}</Text>

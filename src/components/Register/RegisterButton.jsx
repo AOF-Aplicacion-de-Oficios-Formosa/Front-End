@@ -22,7 +22,7 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
 
     const handleRegister = async () => {
         try {
-            const register = url+'register';
+            const register = url+'/register';
             const data = {
                 name: name,
                 surName: surName,
