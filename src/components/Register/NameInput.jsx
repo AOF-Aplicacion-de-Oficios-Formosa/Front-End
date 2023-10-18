@@ -8,7 +8,7 @@ const NameInput = ({ value, onChangeText }) => {
     return (
         <View style={styles.inputContainer}>
             <Input
-                leftIcon={{ type: 'material-icons', name: 'person-outline', color: "#FFFF", size: 22 }}
+                leftIcon={{ type: 'feather', name: 'user', color: "#FFFF", size: 22 }}
                 placeholder="Nombre(s)"
                 value={value}
                 onChangeText={onChangeText}
