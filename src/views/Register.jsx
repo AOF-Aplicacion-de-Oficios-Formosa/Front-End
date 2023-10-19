@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, Modal, TouchableOpacity } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
-import { Input } from '@rneui/base';
 import EmailInput from '../components/Login/EmailInput';
 import PasswordInput from '../components/Login/PasswordInput';
 import RePasswordInput from '../components/Register/RePasswordInput';
 import NameInput from '../components/Register/NameInput';
 import SurNameInput from '../components/Register/SurNameInput';
 import RegisterButton from '../components/Register/RegisterButton';
+import SelectDropdown from 'react-native-select-dropdown';
+import { Entypo } from '@expo/vector-icons';
 
 
 const Register = () => {
@@ -16,6 +17,8 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repassword, setRePassword] = useState('')
+    const roles = ['Buscar', 'Ofrecer'];
+    const [userRole, setUserRole] = useState('');
 
 
     return (
@@ -39,6 +42,29 @@ const Register = () => {
                     <PasswordInput value={password} onChangeText={setPassword} />
                     <Text style={styles.text}>Ingrese de nuevo su contraseña</Text>
                     <RePasswordInput value={repassword} onChangeText={setRePassword} />
+                    <Text style={styles.text}>Seleccione su rol:</Text>
+                    <View style={styles.selectDropdownContainer}>
+                        <SelectDropdown
+                            data={roles}
+                            onSelect={(selectedItem, index) => {
+                                setUserRole(selectedItem);
+                                console.log(`Rol seleccionado: ${selectedItem}`);
+                            }}
+                            buttonTextAfterSelection={(selectedItem, index) => {
+                                return selectedItem;
+                            }}
+                            rowTextForSelection={(item, index) => {
+                                return item;
+                            }}
+                            dropdownStyle={styles.dropdownContainer}
+                            buttonStyle={styles.selectDropdown}
+                            defaultButtonText="Seleccione una opción"
+                            buttonTextStyle={{ fontFamily: 'Product-Sans' }}
+                            renderDropdownIcon={() => (
+                                <Entypo name={'chevron-small-down'} size={24} color="black" />
+                            )}/>
+                            
+                    </View>
                 </View>
                 <RegisterButton
                     name={name}
@@ -46,6 +72,7 @@ const Register = () => {
                     email={email}
                     password={password}
                     repassword={repassword}
+                    userRole={userRole}
                 />
                 <Image source={require('../../assets/img/empleo-blanco.png')} style={styles.footer} />
             </ScrollView>
@@ -73,8 +100,9 @@ const styles = ScaledSheet.create({
         color: 'white',
     },
     img: {
-        marginHorizontal: '90@ms',
-        width: '180@s',
+        marginLeft: '100@ms',
+        marginRight: '100@ms',
+        width: '150@s',
         height: '100@',
         aspectRatio: 1,
         resizeMode: 'contain',
@@ -84,7 +112,7 @@ const styles = ScaledSheet.create({
         width: '350@s',
         height: '31@vs',
         resizeMode: 'contain',
-        marginTop: '50@ms'
+        marginTop: '5@ms'
     },
     text: {
         marginLeft: '20@ms',
@@ -110,8 +138,27 @@ const styles = ScaledSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         marginVertical: 5,
         marginLeft: '10@ms',
-        marginRight: '10@ms'
+        marginRight: '10@ms',
     },
+    selectDropdown: {
+        borderRadius: 15,
+        width: '130%',
+        height: 35,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    },
+    dropdownContainer: {
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+    },
+    selectDropdownContainer: {
+        alignItems: 'center', // Centra horizontalmente
+        marginTop: 10,
+        marginBottom: 10,
+        borderRadius: 15,
+        marginLeft: 100,
+        marginRight: 100// Espacio entre el texto y el dropdown
+    }
 });
 
 export default Register;

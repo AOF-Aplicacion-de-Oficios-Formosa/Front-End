@@ -2,15 +2,12 @@ import React, { useState, useContext } from 'react';
 import { TouchableOpacity, Text, View, Modal, Button } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
-import { UserContext } from '../../context/UserContext'
-import { userType } from '../../context/userTypes';
 import url from '../url';
 
 const LoginButton = ({ auth }) => {
     const navigation = useNavigation();
     const [errorModalVisible, setErrorModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const { stateDispatch } = useContext(UserContext)
 
     const handleLogin = async () => {
         try {
@@ -28,14 +25,6 @@ const LoginButton = ({ auth }) => {
             });
             const res = await response.json();
             if (res.ok) {
-                const res = response
-                stateDispatch({
-                    type: userType.login,
-                    name: res.name,
-                    surname: res.surName,
-                    email: res.email,
-                    token: res.token,
-                })
                 navigation.navigate('search');
             } else {
                 // Mostrar el mensaje de error en el modal

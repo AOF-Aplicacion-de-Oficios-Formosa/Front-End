@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import url from '../components/url';
+import Profile from './Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +21,7 @@ const Search = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(url+'/category');
+                const response = await fetch(url + '/category');
                 if (response.ok) {
                     const data = await response.json();
                     // Filtra las categorías sin 'name' definido
@@ -48,14 +49,6 @@ const Search = () => {
 
     return (
         <View style={styles.container}>
-            <SearchBar
-                placeholder="Buscar categorías"
-                onChangeText={setSearchText}
-                value={searchText}
-                containerStyle={styles.searchBarContainer}
-                inputContainerStyle={styles.searchBarInputContainer}
-                inputStyle={styles.searchBarInput}
-            />
             <Tab.Navigator
                 screenOptions={{
                     tabBarActiveTintColor: 'rgba(2,96,182,1)',
@@ -72,7 +65,7 @@ const Search = () => {
                         headerShown: false,
                     }}
                 >
-                    {() => <CategoryList filteredCategories={filteredCategories} />}
+                    {() => <CategoryList filteredCategories={filteredCategories} setSearchText={setSearchText} searchText={searchText} />}
                 </Tab.Screen>
                 <Tab.Screen
                     name="Perfil"
@@ -81,7 +74,7 @@ const Search = () => {
                             <MaterialIcons name="person-outline" size={25} color={color} />
                         ),
                     }}
-                    component={OtraPestana}
+                    component={Profile}
                 >
 
                 </Tab.Screen>
@@ -90,10 +83,17 @@ const Search = () => {
     );
 };
 
-const CategoryList = ({filteredCategories}) => {
-
+const CategoryList = ({ filteredCategories, setSearchText, searchText }) => {
     return (
         <View style={styles.container}>
+            <SearchBar
+                placeholder="Buscar categorías"
+                onChangeText={setSearchText}
+                value={searchText}
+                containerStyle={styles.searchBarContainer}
+                inputContainerStyle={styles.searchBarInputContainer}
+                inputStyle={styles.searchBarInput}
+            />
             {filteredCategories && filteredCategories.length === 0 ? (
                 <Text style={styles.text}>No se encontraron categorías</Text>
             ) : (
@@ -108,14 +108,6 @@ const CategoryList = ({filteredCategories}) => {
                     )}
                 />
             )}
-        </View>
-    );
-};
-
-const OtraPestana = () => {
-    return (
-        <View>
-            {/* Contenido de la otra pestaña */}
         </View>
     );
 };

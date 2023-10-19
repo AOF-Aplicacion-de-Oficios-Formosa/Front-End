@@ -8,6 +8,7 @@ import CameraButtons from '../components/Register/CameraButtons';
 import SelectDropdown from 'react-native-select-dropdown'
 import { ScaledSheet } from 'react-native-size-matters';
 import url from './../components/url';
+import { Entypo } from '@expo/vector-icons';
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -61,10 +62,12 @@ const Register2 = () => {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.uri);
-    }
-    else {
-      alert('No se seleccionó ninguna foto.😒')
+      if (result.assets && result.assets.length > 0) {
+        const selectedAsset = result.assets[0]; // Obtén la primera imagen del array "assets"
+        setSelectedImage(selectedAsset.uri);
+      } else {
+        alert('No se seleccionó ninguna foto.😒');
+      }
     }
   };
 
@@ -132,10 +135,10 @@ const Register2 = () => {
           ¿Qué ofreces?
         </Text>
         <Text style={styles.text2}>
-          1. Sube una foto de tu certificado.
+          1. Selecciona la categoría a la cual pertenece tu certificado y deseas ofrecer.
         </Text>
         <Text style={styles.text2}>
-          2. Selecciona la categoría a la cual pertenece tu certificado y quieres ofrecer.
+          2. Sube una foto de tu certificado.
         </Text>
         <Text style={styles.text2}>
           3. Presiona "Enviar" y espera a que habilitemos tu cuenta.
@@ -195,6 +198,9 @@ const Register2 = () => {
                 buttonStyle={styles.selectDropdown}
                 defaultButtonText="Seleccionar Categoría"
                 buttonTextStyle={{ fontFamily: 'Product-Sans' }}
+                renderDropdownIcon={() => (
+                  <Entypo name={'chevron-small-down'} size={24} color="black" />
+                )}
               />
             </View>
             <CameraButtons title={'Tomar una foto'} icon='camera' onPress={takePicture} />
@@ -242,10 +248,10 @@ const styles = ScaledSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.9)'
   },
   dropdownContainer: {
-    borderRadius: 10, 
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'gray', 
-  }, 
+    borderColor: 'gray',
+  },
   text: {
     marginLeft: '20@ms',
     fontFamily: 'Product-Sans',

@@ -13,7 +13,7 @@ const Cards = () => {
         <View>
             <Card
                 containerStyle={styles.card}>
-                <Card.Title>BUSCAR UN OFICIO!</Card.Title>
+                <Card.Title style={styles.text}>BUSCAR UN OFICIO!</Card.Title>
                 <Card.Divider />
                 <Image
                     style={styles.image}
@@ -23,7 +23,7 @@ const Cards = () => {
                     Aquí podrás encontrar distintos tipos de oficios, según su categoría.
                 </Text>
                 <Button
-                    onPress={() => { navigation.navigate('login') }}
+                    onPress={() => { navigation.navigate('search') }}
                     icon={
                         <Icon name="search" type='font-awesome' color="#ffffff" iconStyle={styles.icon}
                         />
@@ -34,7 +34,7 @@ const Cards = () => {
             </Card>
             <Card
                 containerStyle={styles.card}>
-                <Card.Title>OFRECER UN OFICIO!</Card.Title>
+                <Card.Title style={styles.text}>OFRECER UN OFICIO!</Card.Title>
                 <Card.Divider />
                 <Image
                     style={styles.image}
@@ -75,6 +75,14 @@ const styles = ScaledSheet.create({
         marginTop: '-10@ms',
         marginVertical: '-0@vs',
         borderRadius: 20,
+    },
+    text: {
+        marginLeft: '10@ms',
+        fontFamily: 'Product-Sans',
+        fontSize: 20,
+        color: 'black',
+        borderColor: '#000000',
+        marginBottom: '5@ms'
     },
 });
 
