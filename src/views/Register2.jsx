@@ -9,6 +9,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { ScaledSheet } from 'react-native-size-matters';
 import url from './../components/url';
 import { Entypo } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -19,6 +20,7 @@ const Register2 = () => {
   const cameraRef = useRef(null);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigation = useNavigation()
 
   useEffect(() => {
     (async () => {

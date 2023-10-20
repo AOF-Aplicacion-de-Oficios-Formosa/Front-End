@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 
 const CollapsibleCard = ({ title, description }) => {
@@ -22,6 +22,7 @@ const CollapsibleCard = ({ title, description }) => {
             {isExpanded && (
                 <View style={[styles.description]}>
                     <Text style={styles.descriptionText}>{description}</Text>
+                    
                 </View>
             )}
         </View>
