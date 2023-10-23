@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { View, Text, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
+import CollapsibleCard from './CollapsibleCard';
 import { ScaledSheet } from 'react-native-size-matters';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import { Octicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import url from '../components/url';
-import Profile from './Profile';
-import CategoryList from '../components/Category/CategoryList';
+import url from '../url';
 
-const Tab = createBottomTabNavigator();
-
-const Search = () => {
+const CategoryList = () => {
     const [searchText, setSearchText] = useState('');
     const [categories, setCategories] = useState([]);
     const [filteredCategories, setFilteredCategories] = useState([]);
@@ -33,7 +26,7 @@ const Search = () => {
                     console.log('Hubo un error en la solicitud:', response.statusText);
                 }
             } catch (error) {
-                console.log('Hubo un error:', error);
+                console.log(`Hubo un error: ${error}`  );
             }
         };
         fetchData();
@@ -49,39 +42,31 @@ const Search = () => {
 
     return (
         <View style={styles.container}>
-            <Tab.Navigator
-                screenOptions={{
-                    tabBarActiveTintColor: 'rgba(2,96,182,1)',
-                    tabBarInactiveTintColor: 'gray',
-                    keyboardHidesTabBar: true,
-                }}
-            >
-                <Tab.Screen
-                    name="Categorías"
-                    options={{
-                        tabBarIcon: ({ color }) => (
-                            <Octicons name="apps" size={25} color={color} />
-                        ),
-                        headerShown: false,
-                    }}
-                >
-                    {() => <CategoryList filteredCategories={filteredCategories} setSearchText={setSearchText} searchText={searchText} />}
-                </Tab.Screen>
-                <Tab.Screen
-                    name="Perfil"
-                    options={{
-                        tabBarIcon: ({ color }) => (
-                            <MaterialIcons name="person-outline" size={25} color={color} />
-                        ),
-                    }}
-                    component={Profile}
-                >
-                </Tab.Screen>
-            </Tab.Navigator>
+            <SearchBar
+                placeholder="Buscar categorías"
+                onChangeText={setSearchText}
+                value={searchText}
+                containerStyle={styles.searchBarContainer}
+                inputContainerStyle={styles.searchBarInputContainer}
+                inputStyle={styles.searchBarInput}
+            />
+            {filteredCategories && filteredCategories.length === 0 ? (
+                <Text style={styles.text}>No se encontraron categorías</Text>
+            ) : (
+                <FlatList
+                    data={filteredCategories}
+                    keyExtractor={(item, index) => (item.id || index).toString()}
+                    renderItem={({ item }) => (
+                        <CollapsibleCard
+                            title={item.name}
+                            description={item.description}
+                        />
+                    )}
+                />
+            )}
         </View>
     );
 };
-
 
 const styles = ScaledSheet.create({
     container: {
@@ -108,11 +93,6 @@ const styles = ScaledSheet.create({
         color: 'black',
         fontFamily: 'Product-Sans',
     },
-    iconWrapper: {
-        backgroundColor: 'gray',
-        borderRadius: 10,
-        padding: 10
-    },
     text: {
         marginLeft: '20@ms',
         fontFamily: 'Product-Sans',
@@ -123,4 +103,4 @@ const styles = ScaledSheet.create({
     },
 });
 
-export default Search;
+export default CategoryList;

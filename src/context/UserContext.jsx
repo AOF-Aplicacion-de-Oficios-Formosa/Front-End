@@ -6,13 +6,18 @@ export const UserContext = createContext();
 export function UserProvider({ children }) {
     const [myState, setState] = useState(null);
 
+    // Define la función setUser
+    const setUser = (userData) => {
+        setState(userData);
+    };
+
     useEffect(() => {
         const token = AsyncStorage.getItem('token');
         if (!token) return;
     }, []);
 
     return (
-        <UserContext.Provider value={{ myState, setState }}>
+        <UserContext.Provider value={{ myState, setUser }}>
             {children}
         </UserContext.Provider>
     );

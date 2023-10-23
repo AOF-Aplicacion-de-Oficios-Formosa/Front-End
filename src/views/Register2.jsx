@@ -178,7 +178,7 @@ const Register2 = () => {
                 setSelectedImage(null);
               }}
             />
-            <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={saveImage} />
+            <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={() => navigation.navigate('wait')} />
           </View>
         ) : (
           <View style={styles.buttons}>

@@ -10,6 +10,7 @@ import Unlock from './src/views/Unlock.jsx';
 import Search from './src/views/Search.jsx';
 import * as Font from 'expo-font';
 import WaitAccount from './src/views/WaitAccount.jsx';
+import Profile from './src/views/Profile.jsx';
 
 export default function App() {
   // Función para cargar fuentes de manera asincrónica
@@ -38,6 +39,7 @@ export default function App() {
           <Stack.Screen name="register2" options={{ headerShown: false }} component={Register2} />
           <Stack.Screen name="search" options={{ headerShown: false }} component={Search} />
           <Stack.Screen name="wait" options={{ headerShown: false }} component={WaitAccount} />
+          <Stack.Screen name='profile' options={{ headerShown: false }} component={Profile}/>
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

@@ -1,69 +1,74 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Text, Card, Button, Icon } from '@rneui/themed';
+import { View, Dimensions } from 'react-native';
+import { Text, Card, Button, Icon, } from '@rneui/themed';
 import { Image } from 'react-native'
 import { ScaledSheet, s } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import Carousel from 'react-native-reanimated-carousel';
 
 const Cards = () => {
-
+    const width = Dimensions.get('window').width;
     const navigation = useNavigation()
+
+    const cardData = [
+        {
+            title: 'BUSCAR UN OFICIO',
+            imageSource: require('../../assets/img/oficios2.jpg'),
+            text: 'Aquí podrás encontrar distintos tipos de oficios, según su categoría.',
+            buttonTitle: 'BUSCAR',
+            navigate: 'search',
+        },
+        {
+            title: 'OFRECER UN OFICIO',
+            imageSource: require('../../assets/img/oficios_mujeres.jpg'),
+            text: 'Ofrece los servicios en los cuales eres especialista.',
+            buttonTitle: 'OFRECER',
+            navigate: 'login',
+        },
+    ];
 
     return (
         <View>
-            <Card
-                containerStyle={styles.card}>
-                <Card.Title style={styles.text}>BUSCAR UN OFICIO!</Card.Title>
-                <Card.Divider />
-                <Image
-                    style={styles.image}
-                    source={require('../../assets/img/oficios2.jpg')}
-                />
-                <Text style={styles.text}>
-                    Aquí podrás encontrar distintos tipos de oficios, según su categoría.
-                </Text>
-                <Button
-                    onPress={() => { navigation.navigate('search') }}
-                    icon={
-                        <Icon name="search" type='font-awesome' color="#ffffff" iconStyle={styles.icon}
-                        />
-                    }
-                    buttonStyle={{ borderRadius: 15 }}
-                    title="BUSCAR"
-                />
-            </Card>
-            <Card
-                containerStyle={styles.card}>
-                <Card.Title style={styles.text}>OFRECER UN OFICIO!</Card.Title>
-                <Card.Divider />
-                <Image
-                    style={styles.image}
-                    source={require('../../assets/img/oficios_mujeres.jpg')}
-                />
-                <Text style={styles.text}>
-                    Ofrece los servicios en los cuales eres especialista.
-                </Text>
-                <Button
-                    onPress={() => { navigation.navigate('login') }}
-                    icon={
-                        <Icon name="bullhorn" type='font-awesome' color="#ffffff" iconStyle={styles.icon}
-                        />
-                    }
-                    buttonStyle={{ borderRadius: 15 }}
-                    title="OFRECER"
-                />
-            </Card>
+            <Carousel
+                loop
+                width={width}
+                height={width}
+                autoPlay={true}
+                data={cardData}
+                panGestureHandlerProps={{
+                    activoOffsetX: [-10, 10],
+                }}
+                scrollAnimationDuration={1500}
+                renderItem={({ item }) => (
+                    <View>
+                        <Card containerStyle={styles.card}>
+                            <Card.Title style={styles.text}>{item.title}</Card.Title>
+                            <Card.Divider />
+                            <Image style={styles.image} source={item.imageSource} />
+                            <Text style={styles.text}>{item.text}</Text>
+                            <Button
+                                onPress={() => navigation.navigate(item.navigate)}
+                                icon={
+                                    <Icon name="search" type="font-awesome" color="#ffffff" iconStyle={styles.icon} />
+                                }
+                                buttonStyle={{ borderRadius: 15 }}
+                                title={item.buttonTitle}
+                            />
+                        </Card>
+                    </View>
+                )}
+            />
         </View>
-
-    )
-}
+    );
+};
 
 const styles = ScaledSheet.create({
     card: {
         marginRight: '10@ms',
         borderRadius: 20,
         alignContent: 'center',
-        color: '#FFFFF'
+        color: '#FFFFF',
+
     },
     icon: {
         marginRight: '5@ms',
