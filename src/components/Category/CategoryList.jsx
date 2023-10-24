@@ -1,14 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import CollapsibleCard from './CollapsibleCard';
 import { ScaledSheet } from 'react-native-size-matters';
 import url from '../url';
+import { useNavigation } from '@react-navigation/native';
 
 const CategoryList = () => {
     const [searchText, setSearchText] = useState('');
     const [categories, setCategories] = useState([]);
     const [filteredCategories, setFilteredCategories] = useState([]);
+    const navigation = useNavigation()
 
 
     useEffect(() => {
@@ -57,10 +59,14 @@ const CategoryList = () => {
                     data={filteredCategories}
                     keyExtractor={(item, index) => (item.id || index).toString()}
                     renderItem={({ item }) => (
-                        <CollapsibleCard
-                            title={item.name}
-                            description={item.description}
-                        />
+                        <TouchableOpacity onPress={()=>{
+                            navigation.navigate('worker', {category: item}, {categoryName: item.name})
+                        }}>
+                            <CollapsibleCard
+                                title={item.name}
+                                description={item.description}
+                            />
+                        </TouchableOpacity>
                     )}
                 />
             )}

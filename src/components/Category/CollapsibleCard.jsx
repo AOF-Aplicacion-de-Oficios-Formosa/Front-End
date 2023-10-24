@@ -9,12 +9,10 @@ const CollapsibleCard = ({ title, description }) => {
 
     return (
         <View style={[styles.card]}>
-            <TouchableOpacity onPress={()=> {navigation.navigate('worker')}}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>{title}</Text>
                     <Entypo name="chevron-small-right" size={24} color="black" />
                 </View>
-            </TouchableOpacity>
         </View>
     );
 };
