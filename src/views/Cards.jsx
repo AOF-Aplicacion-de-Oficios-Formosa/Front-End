@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { View, Dimensions } from 'react-native';
-import { Text, Card, Button, Icon, } from '@rneui/themed';
-import { Image } from 'react-native'
-import { ScaledSheet, s } from 'react-native-size-matters';
+import { Text, Card, Button, Icon } from '@rneui/themed';
+import { Image } from 'react-native';
+import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-reanimated-carousel';
 
 const Cards = () => {
     const width = Dimensions.get('window').width;
-    const navigation = useNavigation()
+    const navigation = useNavigation();
 
     const cardData = [
         {
-            title: 'BUSCAR UN OFICIO',
+            title: 'CONTRATAR UN OFICIO',
             imageSource: require('../../assets/img/oficios2.jpg'),
             text: 'Aquí podrás encontrar distintos tipos de oficios, según su categoría.',
-            buttonTitle: 'BUSCAR',
+            buttonTitle: 'CONTRATAR',
             navigate: 'search',
+            iconName: 'search', // Icono para Contratar
         },
         {
             title: 'OFRECER UN OFICIO',
@@ -24,6 +25,7 @@ const Cards = () => {
             text: 'Ofrece los servicios en los cuales eres especialista.',
             buttonTitle: 'OFRECER',
             navigate: 'login',
+            iconName: 'bullhorn', // Icono para Ofrecer
         },
     ];
 
@@ -38,7 +40,7 @@ const Cards = () => {
                 panGestureHandlerProps={{
                     activoOffsetX: [-10, 10],
                 }}
-                scrollAnimationDuration={1500}
+                scrollAnimationDuration={1800}
                 renderItem={({ item }) => (
                     <View>
                         <Card containerStyle={styles.card}>
@@ -49,9 +51,9 @@ const Cards = () => {
                             <Button
                                 onPress={() => navigation.navigate(item.navigate)}
                                 icon={
-                                    <Icon name="search" type="font-awesome" color="#ffffff" iconStyle={styles.icon} />
+                                    <Icon name={item.iconName} type="font-awesome" color="#ffffff" iconStyle={styles.icon} />
                                 }
-                                buttonStyle={{ borderRadius: 15 }}
+                                buttonStyle={{ borderRadius: 15, backgroundColor: 'rgba(2,76,139,255)' }}
                                 title={item.buttonTitle}
                             />
                         </Card>
@@ -61,7 +63,6 @@ const Cards = () => {
         </View>
     );
 };
-
 const styles = ScaledSheet.create({
     card: {
         marginRight: '10@ms',

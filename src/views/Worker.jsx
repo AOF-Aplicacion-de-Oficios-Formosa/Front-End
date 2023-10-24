@@ -11,9 +11,9 @@ const Worker = () => {
 }
 
 const styles = ScaledSheet.create({
-    container: {
-        backgroundColor: 'rgba(2,96,182,1)'
-    }
+  container: {
+    backgroundColor: 'rgba(2,76,139,255)'
+  }
 })
 
 export default Worker;

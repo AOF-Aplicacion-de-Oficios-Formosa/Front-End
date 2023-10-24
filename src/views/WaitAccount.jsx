@@ -14,15 +14,15 @@ const WaitAccount = () => {
                 <Text style={styles.text}>Te avisaremos por correo cuando tu cuenta esté habilitada!</Text>
             </View>
             <View>
-            <TouchableOpacity
-                title="Volver al inicio"
-                onPress={() => navigation.navigate('home')}
-                style={styles.button}
-            >
-                <Text style={styles.buttonText}>
-                    Volver al Inicio
-                </Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    title="Volver al inicio"
+                    onPress={() => navigation.navigate('home')}
+                    style={styles.button}
+                >
+                    <Text style={styles.buttonText}>
+                        Volver al Inicio
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -30,7 +30,7 @@ const WaitAccount = () => {
 
 const styles = ScaledSheet.create({
     container: {
-        backgroundColor: 'rgba(2,96,182,1)',
+        backgroundColor: 'rgba(2,76,139,255)',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

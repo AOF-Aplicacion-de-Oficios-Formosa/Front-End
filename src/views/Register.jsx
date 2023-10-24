@@ -62,8 +62,8 @@ const Register = () => {
                             buttonTextStyle={{ fontFamily: 'Product-Sans' }}
                             renderDropdownIcon={() => (
                                 <Entypo name={'chevron-small-down'} size={24} color="black" />
-                            )}/>
-                            
+                            )} />
+
                     </View>
                 </View>
                 <RegisterButton
@@ -84,7 +84,7 @@ const styles = ScaledSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'rgba(2,96,182,1)',
+        backgroundColor: 'rgba(2,76,139,255)',
     },
     inputContainer: {
         flex: 1,

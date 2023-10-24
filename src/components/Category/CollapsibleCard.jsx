@@ -1,30 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const CollapsibleCard = ({ title, description }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const navigation = useNavigation()
 
-    const icon = isExpanded ? 'chevron-small-up' : 'chevron-small-down';
-
-    const onPress = () => {
-        setIsExpanded(!isExpanded);
-    };
 
     return (
         <View style={[styles.card]}>
-            <TouchableOpacity onPress={onPress}>
+            <TouchableOpacity onPress={()=> {navigation.navigate('worker')}}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>{title}</Text>
-                    <Entypo name={icon} size={24} color="black" />
+                    <Entypo name="chevron-small-right" size={24} color="black" />
                 </View>
             </TouchableOpacity>
-            {isExpanded && (
-                <View style={[styles.description]}>
-                    <Text style={styles.descriptionText}>{description}</Text>
-                    
-                </View>
-            )}
         </View>
     );
 };
