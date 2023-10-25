@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, Text, View, Modal, Button } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import url from '../url';
 
 const RegisterButton = ({ name, surName, email, password, repassword, userRole }) => {
@@ -12,10 +12,10 @@ const RegisterButton = ({ name, surName, email, password, repassword, userRole }
     const handleRegisterSuccess = (serverMessage) => {
         setModalMessage(serverMessage);
         setModalVisible(true);
-        if (userRole === 'Ofrecer'){
+        if (userRole === 'Ofrecer') {
             navigation.navigate('register2'); // Puedes agregar cualquier otra acción que desees después de un registro exitoso
         }
-        else{
+        else {
             navigation.navigate('search')
         }
     };
@@ -27,13 +27,14 @@ const RegisterButton = ({ name, surName, email, password, repassword, userRole }
 
     const handleRegister = async () => {
         try {
-            const register = url+'/register';
+            const register = url + '/register';
             const data = {
                 name: name,
                 surName: surName,
                 email: email,
                 password: password,
                 repassword: repassword,
+                userRole: userRole
             };
             const response = await fetch(register, {
                 method: 'POST',
@@ -42,9 +43,9 @@ const RegisterButton = ({ name, surName, email, password, repassword, userRole }
                 },
                 body: JSON.stringify(data), // Convierte los datos a JSON
             });
-    
+
             const res = await response.json();
-    
+
             if (res.ok) {
                 handleRegisterSuccess(res.msg);
             } else {

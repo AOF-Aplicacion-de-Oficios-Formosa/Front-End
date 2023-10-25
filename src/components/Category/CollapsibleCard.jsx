@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const CollapsibleCard = ({ title, description }) => {
+const CollapsibleCard = ({ title }) => {
     const navigation = useNavigation()
 
 

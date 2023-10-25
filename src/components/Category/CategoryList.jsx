@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import CollapsibleCard from './CollapsibleCard';
@@ -28,7 +28,7 @@ const CategoryList = () => {
                     console.log('Hubo un error en la solicitud:', response.statusText);
                 }
             } catch (error) {
-                console.log(`Hubo un error: ${error}`  );
+                console.log(`Hubo un error: ${error}`);
             }
         };
         fetchData();
@@ -59,12 +59,11 @@ const CategoryList = () => {
                     data={filteredCategories}
                     keyExtractor={(item, index) => (item.id || index).toString()}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={()=>{
-                            navigation.navigate('worker', {category: item}, {categoryName: item.name})
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('worker', { categoryId: item._id });// Pasa la ID de la categoría
                         }}>
                             <CollapsibleCard
                                 title={item.name}
-                                description={item.description}
                             />
                         </TouchableOpacity>
                     )}
