@@ -53,7 +53,7 @@ const styles = ScaledSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'rgba(2,96,182,1)',
+        backgroundColor: 'rgba(2,76,139,255)',
     },
     imageContainer: {
         alignItems: 'center',

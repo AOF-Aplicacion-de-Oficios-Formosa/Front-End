@@ -4,7 +4,7 @@ import { IconButton } from 'react-native-paper';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Input } from '@rneui/themed';
 
-const RePasswordInput = ({value, onChangeText}) => {
+const RePasswordInput = ({ value, onChangeText }) => {
     const [repassword, setRePassword] = useState('');
     const [showRePassword, setShowRePassword] = useState(false);
 
@@ -21,11 +21,7 @@ const RePasswordInput = ({value, onChangeText}) => {
                 value={value}
                 secureTextEntry={!showRePassword}
                 placeholderTextColor="white"
-                inputStyle={{
-                    flex: 1,
-                    color: 'white',
-                    paddingRight: 40,
-                }}
+                inputStyle={styles.input}
             />
             <IconButton
                 style={styles.icon}
@@ -54,6 +50,12 @@ const styles = ScaledSheet.create({
         top: '-3@vs',
         margin: '0@ms'
     },
+    input: {
+        flex: 1,
+        color: 'white',
+        paddingRight: 40,
+        fontFamily: 'Product-Sans'
+    }
 });
 
 export default RePasswordInput;

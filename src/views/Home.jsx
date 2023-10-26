@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Text, Button, Icon } from '@rneui/themed';
-import { ScaledSheet } from 'react-native-size-matters';
+import { ScaledSheet, s } from 'react-native-size-matters';
 import Cards from './Cards';
+import CategoryList from '../components/Category/CategoryList';
 
 export default function Home() {
     return (
@@ -12,11 +13,10 @@ export default function Home() {
                 style={styles.image}
             />
             <Text style={styles.text}>Bienvenid@</Text>
-            <ScrollView>
-                <View style={styles.card}>
-                    <Cards />
-                </View>
-            </ScrollView>
+            <Cards />
+            <Image
+            source={require('../../assets/img/formosa.png')}
+            style={styles.image}/>
         </View>
     );
 }
@@ -26,7 +26,7 @@ const styles = ScaledSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(2,96,182,1)',
+        backgroundColor: 'rgba(2,76,139,255)',
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -67,5 +67,4 @@ const styles = ScaledSheet.create({
         resizeMode: 'contain',
         marginTop: '-40@ms'
     },
-
 });

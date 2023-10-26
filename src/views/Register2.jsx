@@ -8,6 +8,8 @@ import CameraButtons from '../components/Register/CameraButtons';
 import SelectDropdown from 'react-native-select-dropdown'
 import { ScaledSheet } from 'react-native-size-matters';
 import url from './../components/url';
+import { Entypo } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -18,6 +20,7 @@ const Register2 = () => {
   const cameraRef = useRef(null);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigation = useNavigation()
 
   useEffect(() => {
     (async () => {
@@ -61,10 +64,12 @@ const Register2 = () => {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.uri);
-    }
-    else {
-      alert('No se seleccionó ninguna foto.😒')
+      if (result.assets && result.assets.length > 0) {
+        const selectedAsset = result.assets[0]; // Obtén la primera imagen del array "assets"
+        setSelectedImage(selectedAsset.uri);
+      } else {
+        alert('No se seleccionó ninguna foto.😒');
+      }
     }
   };
 
@@ -132,10 +137,10 @@ const Register2 = () => {
           ¿Qué ofreces?
         </Text>
         <Text style={styles.text2}>
-          1. Sube una foto de tu certificado.
+          1. Selecciona la categoría a la cual pertenece tu certificado y deseas ofrecer.
         </Text>
         <Text style={styles.text2}>
-          2. Selecciona la categoría a la cual pertenece tu certificado y quieres ofrecer.
+          2. Sube una foto de tu certificado.
         </Text>
         <Text style={styles.text2}>
           3. Presiona "Enviar" y espera a que habilitemos tu cuenta.
@@ -173,7 +178,7 @@ const Register2 = () => {
                 setSelectedImage(null);
               }}
             />
-            <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={saveImage} />
+            <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={() => navigation.navigate('wait')} />
           </View>
         ) : (
           <View style={styles.buttons}>
@@ -195,6 +200,9 @@ const Register2 = () => {
                 buttonStyle={styles.selectDropdown}
                 defaultButtonText="Seleccionar Categoría"
                 buttonTextStyle={{ fontFamily: 'Product-Sans' }}
+                renderDropdownIcon={() => (
+                  <Entypo name={'chevron-small-down'} size={24} color="black" />
+                )}
               />
             </View>
             <CameraButtons title={'Tomar una foto'} icon='camera' onPress={takePicture} />
@@ -211,7 +219,7 @@ const styles = ScaledSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: 'rgba(2,96,182,1)',
+    backgroundColor: 'rgba(2,76,139,255)',
     justifyContent: 'center',
   },
   camera: {
@@ -242,10 +250,10 @@ const styles = ScaledSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.9)'
   },
   dropdownContainer: {
-    borderRadius: 10, 
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'gray', 
-  }, 
+    borderColor: 'gray',
+  },
   text: {
     marginLeft: '20@ms',
     fontFamily: 'Product-Sans',

@@ -20,11 +20,7 @@ const PasswordInput = ({ value, onChangeText }) => {
                 value={value}
                 secureTextEntry={!showPassword}
                 placeholderTextColor="white"
-                inputStyle={{
-                    flex: 1,
-                    color: 'white',
-                    paddingRight: 40,
-                }}
+                inputStyle={styles.input}
             />
             <IconButton
                 style={styles.icon}
@@ -53,6 +49,12 @@ const styles = ScaledSheet.create({
         top: '-3@vs',
         margin: '0@ms'
     },
+    input: {
+        flex: 1,
+        color: 'white',
+        paddingRight: 40,
+        fontFamily: 'Product-Sans'
+    }
 });
 
 export default PasswordInput;

@@ -4,7 +4,7 @@ import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import url from '../url';
 
-const RegisterButton = ({ name, surName, email, password, repassword }) => {
+const RegisterButton = ({ name, surName, email, password, repassword, userRole }) => {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
@@ -12,7 +12,12 @@ const RegisterButton = ({ name, surName, email, password, repassword }) => {
     const handleRegisterSuccess = (serverMessage) => {
         setModalMessage(serverMessage);
         setModalVisible(true);
-        navigation.navigate('register2'); // Puedes agregar cualquier otra acción que desees después de un registro exitoso
+        if (userRole === 'Ofrecer'){
+            navigation.navigate('register2'); // Puedes agregar cualquier otra acción que desees después de un registro exitoso
+        }
+        else{
+            navigation.navigate('search')
+        }
     };
 
     const handleRegisterError = (errorMessage) => {

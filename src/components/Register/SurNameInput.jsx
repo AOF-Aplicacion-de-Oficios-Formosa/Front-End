@@ -32,6 +32,7 @@ const styles = ScaledSheet.create({
     input: {
         flex: 1,
         color: 'white',
+        fontFamily: 'Product-Sans'
     },
 });
 
