@@ -17,8 +17,8 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repassword, setRePassword] = useState('')
-    const roles = ['Buscar', 'Ofrecer'];
     const [userRole, setUserRole] = useState('');
+    const roles = ['Buscar', 'Ofrecer'];
 
 
     return (
@@ -63,7 +63,6 @@ const Register = () => {
                             renderDropdownIcon={() => (
                                 <Entypo name={'chevron-small-down'} size={24} color="black" />
                             )} />
-
                     </View>
                 </View>
                 <RegisterButton

@@ -3,18 +3,16 @@ import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const CollapsibleCard = ({ title, description }) => {
+const CollapsibleCard = ({ title }) => {
     const navigation = useNavigation()
 
 
     return (
         <View style={[styles.card]}>
-            <TouchableOpacity onPress={()=> {navigation.navigate('worker')}}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>{title}</Text>
                     <Entypo name="chevron-small-right" size={24} color="black" />
                 </View>
-            </TouchableOpacity>
         </View>
     );
 };

@@ -83,6 +83,7 @@ const Search = () => {
 };
 
 
+
 const styles = ScaledSheet.create({
     container: {
         flex: 1,

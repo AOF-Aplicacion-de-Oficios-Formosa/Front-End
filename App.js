@@ -41,7 +41,7 @@ export default function App() {
           <Stack.Screen name="search" options={{ headerShown: false }} component={Search} />
           <Stack.Screen name="wait" options={{ headerShown: false }} component={WaitAccount} />
           <Stack.Screen name='profile' options={{ headerShown: false }} component={Profile}/>
-          <Stack.Screen name='worker' options={{headerShown: false}} component={Worker}/>
+          <Stack.Screen name='worker' options={({ route }) => ({ title: route.params.categoryName, headerShown: false })} component={Worker}/>
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
