@@ -13,7 +13,7 @@ import { Entypo } from '@expo/vector-icons';
 
 const Register = () => {
     const [name, setName] = useState('')
-    const [surName, setSurName] = useState('');
+    const [surname, setSurName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repassword, setRePassword] = useState('')
@@ -35,7 +35,7 @@ const Register = () => {
                     <Text style={styles.text1}>Ingrese su nombre(s)</Text>
                     <NameInput value={name} onChangeText={setName} />
                     <Text style={styles.text}>Ingrese su apellido(s)</Text>
-                    <SurNameInput value={surName} onChangeText={setSurName} />
+                    <SurNameInput value={surname} onChangeText={setSurName} />
                     <Text style={styles.text}>Ingrese su correo</Text>
                     <EmailInput value={email} onChangeText={setEmail} />
                     <Text style={styles.text}>Ingrese su contraseña</Text>
@@ -67,7 +67,7 @@ const Register = () => {
                 </View>
                 <RegisterButton
                     name={name}
-                    surName={surName}
+                    surname={surname}
                     email={email}
                     password={password}
                     repassword={repassword}

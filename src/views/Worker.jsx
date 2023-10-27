@@ -45,10 +45,10 @@ const Worker = ({ route }) => {
           keyExtractor={(worker) => worker._id.toString()}
           renderItem={({ item, index }) => (
             <View style={[styles.workerItem, index % 2 === 0 ? styles.evenItem : styles.oddItem]}>
-              <Text style={styles.text2}>Nombre del trabajador: {item.user ? item.user.name : 'Sin nombre'}</Text>
+              <Text style={styles.text2}>Nombre: {item.user ? item.user.name : 'Sin nombre'}</Text>
               <Text style={styles.text2}>Experiencia: {item.experience}</Text>
               <Text style={styles.text2}>Descripción: {item.description}</Text>
-              <Button title={'Contratar'} onPress={''}></Button>
+              <Button style={styles.button} title={'Contratar'} onPress={''}></Button>
             </View>
           )}
         />
@@ -83,8 +83,9 @@ const styles = ScaledSheet.create({
     marginLeft: '20@ms',
     fontFamily: 'Product-Sans',
     fontSize: 25,
-    color: '#FFFF',
+    color: 'black',
     borderColor: '#000000',
+    marginBottom: '5@ms'
   },
   workerItem: {
     backgroundColor: 'black', // Fondo blanco por defecto
@@ -93,11 +94,14 @@ const styles = ScaledSheet.create({
     borderRadius: 10,
   },
   evenItem: {
-    backgroundColor: 'lightblue', // Fondo azul claro para los elementos pares
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fondo azul claro para los elementos pares
   },
   oddItem: {
-    backgroundColor: 'lightgreen', // Fondo verde claro para los elementos impares
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fondo verde claro para los elementos impares
   },
+  button: {
+    borderRadius: 10
+  }
 });
 
 export default Worker;

@@ -24,7 +24,7 @@ const Cards = () => {
             imageSource: require('../../assets/img/oficios_mujeres.jpg'),
             text: 'Ofrece los servicios en los cuales eres especialista.',
             buttonTitle: 'OFRECER',
-            navigate: 'login',
+            navigate: 'register',
             iconName: 'bullhorn', // Icono para Ofrecer
         },
     ];
