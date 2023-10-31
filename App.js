@@ -11,6 +11,7 @@ import Search from './src/views/Search.jsx';
 import WaitAccount from './src/views/WaitAccount.jsx';
 import Profile from './src/views/Profile.jsx';
 import Worker from './src/views/Worker.jsx';
+import WorkerProfile from './src/views/WorkerProfile.jsx';
 import * as Font from 'expo-font';
 
 export default function App() {
@@ -42,6 +43,7 @@ export default function App() {
           <Stack.Screen name="wait" options={{ headerShown: false }} component={WaitAccount} />
           <Stack.Screen name='profile' options={{ headerShown: false }} component={Profile}/>
           <Stack.Screen name='worker' options={({ route }) => ({ title: route.params.categoryName, headerShown: false })} component={Worker}/>
+          <Stack.Screen name='workerprofile' options={{headerShown: false}} component={WorkerProfile}/>
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

@@ -233,7 +233,7 @@ const Register2 = () => {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <ActivityIndicator size="small" color="#0000ff" />
+              <ActivityIndicator size="small" color="#084c8c" />
               <Text style={styles.modalText}>Subiendo imagen...</Text>
             </View>
           </View>

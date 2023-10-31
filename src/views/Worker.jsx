@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ScrollView } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import url from '../components/url';
-import { Button } from '@rneui/base';
+import { Button } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
 
 const Worker = ({ route }) => {
   const { categoryId } = route.params; // categoryId es la ID de la categoría
   const [workers, setWorkers] = useState([]);
-  const [category, setCategory] = useState(null); // Define la variable category y su función setState
-  const [errorMessage, setErrorMessage] = useState(null); // Define la variable errorMessage y su función setState
+  const [category, setCategory] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [description, setDescription] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function fetchWorkersByCategory() {
@@ -48,7 +50,18 @@ const Worker = ({ route }) => {
               <Text style={styles.text2}>Nombre: {item.user ? item.user.name : 'Sin nombre'}</Text>
               <Text style={styles.text2}>Experiencia: {item.experience}</Text>
               <Text style={styles.text2}>Descripción: {item.description}</Text>
-              <Button style={styles.button} title={'Contratar'} onPress={''}></Button>
+              <Button
+                style={styles.button}
+                title={'Ver más'}
+                onPress={() => {
+                  navigation.navigate('workerprofile', {
+                    user: {
+                      name: item.user.name, // Asegúrate de que item.user.name esté definido
+                      email: item.user.email, // Puedes incluir otros datos si es necesario
+                    },
+                  });
+                }}
+              />
             </View>
           )}
         />
