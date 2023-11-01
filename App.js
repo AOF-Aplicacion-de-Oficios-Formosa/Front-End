@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { UserProvider } from './src/context/UserContext.jsx';
@@ -41,11 +42,12 @@ export default function App() {
           <Stack.Screen name="register2" options={{ headerShown: false }} component={Register2} />
           <Stack.Screen name="search" options={{ headerShown: false }} component={Search} />
           <Stack.Screen name="wait" options={{ headerShown: false }} component={WaitAccount} />
-          <Stack.Screen name='profile' options={{ headerShown: false }} component={Profile}/>
-          <Stack.Screen name='worker' options={({ route }) => ({ title: route.params.categoryName, headerShown: false })} component={Worker}/>
-          <Stack.Screen name='workerprofile' options={{headerShown: false}} component={WorkerProfile}/>
+          <Stack.Screen name='profile' options={{ headerShown: false }} component={Profile} />
+          <Stack.Screen name='worker' options={({ route }) => ({ title: route.params.categoryName, headerShown: false })} component={Worker} />
+          <Stack.Screen name='workerprofile' options={{ headerShown: false }} component={WorkerProfile} />
         </Stack.Navigator>
       </NavigationContainer>
+      <StatusBar style="light" />
     </UserProvider>
   );
 }

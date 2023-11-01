@@ -19,16 +19,20 @@ const CategoryList = () => {
                 const response = await fetch(url + '/category');
                 if (response.ok) {
                     const data = await response.json();
-                    // Filtra las categorías sin 'name' definido
-                    const filteredData = data.filter((category) => category.name);
-                    // Ordena las categorías alfabéticamente
-                    filteredData.sort((a, b) => a.name.localeCompare(b.name));
-                    setCategories(filteredData);
+                    if (Array.isArray(data)) {
+                        // Filtra las categorías sin 'name' definido
+                        const filteredData = data.filter((category) => category.name);
+                        // Ordena las categorías alfabéticamente
+                        filteredData.sort((a, b) => a.name.localeCompare(b.name));
+                        setCategories(filteredData);
+                    } else {
+                        console.log('Respuesta no válida: los datos no son un array', data);
+                    }
                 } else {
                     console.log('Hubo un error en la solicitud:', response.statusText);
                 }
             } catch (error) {
-                console.log(`Hubo un error: ${error}`);
+                console.log(`Hubo un error en la solicitud: ${error.message}`);
             }
         };
         fetchData();

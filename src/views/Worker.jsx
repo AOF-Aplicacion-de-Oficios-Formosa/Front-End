@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ScrollView } from 'react-native';
+import { View, Text, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import url from '../components/url';
 import { Button } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
+
 
 const Worker = ({ route }) => {
   const { categoryId } = route.params; // categoryId es la ID de la categoría
@@ -46,22 +47,25 @@ const Worker = ({ route }) => {
           data={workers}
           keyExtractor={(worker) => worker._id.toString()}
           renderItem={({ item, index }) => (
-            <View style={[styles.workerItem, index % 2 === 0 ? styles.evenItem : styles.oddItem]}>
+            <View style={styles.workerItem}>
               <Text style={styles.text2}>Nombre: {item.user ? item.user.name : 'Sin nombre'}</Text>
               <Text style={styles.text2}>Experiencia: {item.experience}</Text>
-              <Text style={styles.text2}>Descripción: {item.description}</Text>
-              <Button
-                style={styles.button}
-                title={'Ver más'}
-                onPress={() => {
-                  navigation.navigate('workerprofile', {
-                    user: {
-                      name: item.user.name, // Asegúrate de que item.user.name esté definido
-                      email: item.user.email, // Puedes incluir otros datos si es necesario
-                    },
-                  });
-                }}
-              />
+              <View style={styles.content}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    navigation.navigate('workerprofile', {
+                      userId: item._id,
+                      workers: workers,
+                      description: item.description, // Agregar la descripción
+                    });
+                  }}
+                >
+                  <Text style={styles.buttonText}>
+                    Ver Más
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         />
@@ -101,20 +105,29 @@ const styles = ScaledSheet.create({
     marginBottom: '5@ms'
   },
   workerItem: {
-    backgroundColor: 'black', // Fondo blanco por defecto
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fondo blanco por defecto
     padding: '10@ms',
     margin: '5@ms',
     borderRadius: 10,
   },
-  evenItem: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fondo azul claro para los elementos pares
-  },
-  oddItem: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fondo verde claro para los elementos impares
-  },
   button: {
-    borderRadius: 10
-  }
+    backgroundColor: 'black',
+    borderRadius: 20,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    padding: 10,
+  },
+  content: {
+    padding: '5@ms',
+    borderRadius: '10@ms',
+    alignItems: 'center',
+  },
 });
 
 export default Worker;
