@@ -57,7 +57,8 @@ const Worker = ({ route }) => {
                     navigation.navigate('workerprofile', {
                       userId: item._id,
                       workers: workers,
-                      description: item.description, // Agregar la descripción
+                      description: item.description,
+                      category: category,
                     });
                   }}
                 >
