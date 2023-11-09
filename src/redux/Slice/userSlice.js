@@ -12,6 +12,15 @@ const guardarToken = async (token) => {
     }
 }
 
+const getToken = async () => {
+    try {
+        const token = await AsyncStorage.getItem("token");
+        return token || ''; // Devuelve '' si el token es null
+    } catch (error) {
+        console.error("Error token:", error);
+        throw error; // Lanza el error nuevamente
+    }
+};
 
 export const LoginUser = createAsyncThunk('LoginUser', async (data) => {
     try {
@@ -23,21 +32,55 @@ export const LoginUser = createAsyncThunk('LoginUser', async (data) => {
             },
             body: JSON.stringify(data),
         });
-        const user = response.data
-        console.log(user.token)
-        await guardarToken(user.token)
-        return user;
 
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`Error al iniciar sesión. Detalles: ${errorMessage}`);
+        }
+
+        const user = await response.json();
+        if (!user || !user.token) {
+            throw new Error('Token no encontrado en la respuesta del servidor.');
+        }
+
+        await guardarToken(user.token);
+        return user;
     } catch (error) {
-        console.log("Error al hacer el fetch", error)
+        console.log("Error al hacer el fetch", error);
         throw error;
     }
-})
+});
 
+export const GetUser = createAsyncThunk('GetUser', async () => {
+    try {
+        console.log('get users')
+        const getUser = url + '/userT';
+        const token = await getToken();
+        const response = await fetch(getUser, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener usuario único. Status: ${response.status}`);
+        }
+
+        const users = await response.json(); // Parsea la respuesta JSON
+        console.log("user redux ", users);
+        return users.user;
+    } catch (error) {
+        console.log("Error al hacer el fetch", error);
+        throw error;
+    }
+});
 
 const initialState = {
-    usuario: [],
-    loading: 'idle'
+    status: null,
+    loading: 'idle',
+    dataUser: {}
 }
 
 export const userSlice = createSlice({
@@ -50,9 +93,19 @@ export const userSlice = createSlice({
         })
         builder.addCase(LoginUser.fulfilled, (state, actions) => {
             state.loading = false,
-                state.usuario = actions.payload
+                state.status = actions.payload
         })
         builder.addCase(LoginUser.rejected, (state) => {
+            state.loading = 'failed'
+        })
+        builder.addCase(GetUser.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(GetUser.fulfilled, (state, actions) => {
+            state.loading = false,
+                state.dataUser = actions.payload
+        })
+        builder.addCase(GetUser.rejected, (state) => {
             state.loading = 'failed'
         })
     }

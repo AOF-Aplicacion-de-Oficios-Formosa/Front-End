@@ -1,52 +1,51 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, Text, View, Modal, Button } from 'react-native';
+import { TouchableOpacity, Text, View, Modal } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
-import url from '../url';
 import { useDispatch } from 'react-redux';
 import { LoginUser } from '../../redux/Slice/userSlice';
-
-
 
 const LoginButton = ({ auth }) => {
     const navigation = useNavigation();
     const [errorModalVisible, setErrorModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const dispatch = useDispatch()
-
+    const dispatch = useDispatch();
 
     const handleLogin = async () => {
-
         try {
             const data = {
                 email: auth.email,
                 password: auth.password,
             };
-            const datos = await dispatch(LoginUser(data))
-            console.log(datos)
-            return datos;
+            const response = await dispatch(LoginUser(data));
+
+            if (response && response.payload && response.payload.ok) {
+                // Inicio de sesión exitoso
+                navigation.navigate('profile');
+            } else {
+                // Mostrar el mensaje de error en el modal
+                const errorMsg = response && response.payload && response.payload.error || 'Intente de nuevo';
+                setErrorMessage(errorMsg);
+                setErrorModalVisible(true);
+            }
         } catch (error) {
             console.error(error);
             // Mostrar mensaje de error de red o del servidor en el modal
             setErrorMessage('Error de red o del servidor');
             setErrorModalVisible(true);
         }
-    }
+    };
 
     return (
         <View style={styles.container}>
-            {/* Resto del código */}
             <TouchableOpacity
                 title="Ingresar"
                 onPress={() => handleLogin()}
                 style={styles.button}
             >
-                <Text style={styles.buttonText}>
-                    Ingresar
-                </Text>
+                <Text style={styles.buttonText}>Ingresar</Text>
             </TouchableOpacity>
 
-            {/* Modal de error */}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -60,9 +59,7 @@ const LoginButton = ({ auth }) => {
                             onPress={() => setErrorModalVisible(false)}
                             style={styles.button2}
                         >
-                            <Text style={styles.buttonText}>
-                                Cerrar
-                            </Text>
+                            <Text style={styles.buttonText}>Cerrar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
