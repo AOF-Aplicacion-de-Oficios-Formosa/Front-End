@@ -63,7 +63,6 @@ const WorkerProfile = () => {
     useEffect(() => {
         if (worker && worker.user) {
             const userId = worker.user._id;
-
             async function fetchUserData() {
                 try {
                     const response = await fetch(url + `/user/${userId}`, {
