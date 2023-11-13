@@ -16,7 +16,7 @@ const Cards = () => {
             imageSource: require('../../assets/img/oficios2.jpg'),
             text: 'Aquí podrás encontrar distintos tipos de oficios, según su categoría.',
             buttonTitle: 'CONTRATAR',
-            navigate: 'login',
+            navigate: 'search',
             iconName: 'search', // Icono para Contratar
         },
         {

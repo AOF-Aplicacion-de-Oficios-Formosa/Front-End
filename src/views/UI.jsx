@@ -2,9 +2,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React, { useState } from 'react'
 import CategoryList from '../components/Category/CategoryList'
 import { Octicons, Feather } from '@expo/vector-icons';
-
 import Register2 from './Register2';
 import Profile from './Profile';
+import { ScaledSheet } from 'react-native-size-matters';
 const Tab = createBottomTabNavigator()
 
 function UI() {
@@ -19,6 +19,18 @@ function UI() {
                     tabBarIcon: ({ color }) => (
                         <Octicons name="apps" size={25} color={color} />
                     ),
+                    tabBarStyle: {
+                        backgroundColor: '#FFFFFF',
+                        tabBarBackgroundColor: '#000000',
+                        tabBarLabelColor: '#FFFFFF',
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                        tabBarIconMargin: 5,
+                        tabBarLabelMargin: 5,
+
+                    },
                     headerShown: false,
                 }}
             >
@@ -30,6 +42,17 @@ function UI() {
                     tabBarIcon: ({ color }) => (
                         <Feather name="user" size={25} color={color} />
                     ),
+                    tabBarStyle: {
+                        backgroundColor: '#FFFFFF',
+                        tabBarBackgroundColor: '#000000',
+                        tabBarLabelColor: '#FFFFFF',
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                        tabBarIconMargin: 5,
+                        tabBarLabelMargin: 5,
+                    },
                     headerShown: false,
                 }}
             >

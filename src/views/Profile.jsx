@@ -11,7 +11,7 @@ const Profile = () => {
     const dataUser = useSelector(state => state.user.dataUser);
     const navigation = useNavigation()
 
-    console.log("info ", dataUser)
+    console.log("info", dataUser)
 
     const getDataUser = async () => {
         await dispatch(GetUser())
