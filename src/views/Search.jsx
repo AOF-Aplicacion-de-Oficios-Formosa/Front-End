@@ -9,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import url from '../components/url';
 import Profile from './Profile';
 import CategoryList from '../components/Category/CategoryList';
+import UI from './UI';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,35 +50,7 @@ const Search = () => {
 
     return (
         <View style={styles.container}>
-            <Tab.Navigator
-                screenOptions={{
-                    tabBarActiveTintColor: 'rgba(2,96,182,1)',
-                    tabBarInactiveTintColor: 'gray',
-                    keyboardHidesTabBar: true,
-                }}
-            >
-                <Tab.Screen
-                    name="Categorías"
-                    options={{
-                        tabBarIcon: ({ color }) => (
-                            <Octicons name="apps" size={25} color={color} />
-                        ),
-                        headerShown: false,
-                    }}
-                >
-                    {() => <CategoryList filteredCategories={filteredCategories} setSearchText={setSearchText} searchText={searchText} />}
-                </Tab.Screen>
-                <Tab.Screen
-                    name="Perfil"
-                    options={{
-                        tabBarIcon: ({ color }) => (
-                            <MaterialIcons name="person-outline" size={25} color={color} />
-                        ),
-                    }}
-                    component={Profile}
-                >
-                </Tab.Screen>
-            </Tab.Navigator>
+            <UI/>
         </View>
     );
 };

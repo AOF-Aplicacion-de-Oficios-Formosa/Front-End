@@ -4,7 +4,7 @@ import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import url from '../url';
 
-const RegisterButton = ({ name, surName, email, password, repassword, userRole }) => {
+const RegisterButton = ({ name, surname, email, password, repassword, userRole }) => {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
@@ -13,7 +13,7 @@ const RegisterButton = ({ name, surName, email, password, repassword, userRole }
         setModalMessage(serverMessage);
         setModalVisible(true);
         if (userRole === 'Ofrecer') {
-            navigation.navigate('register2'); // Puedes agregar cualquier otra acción que desees después de un registro exitoso
+            navigation.navigate('register2');
         }
         else {
             navigation.navigate('search')
@@ -27,16 +27,16 @@ const RegisterButton = ({ name, surName, email, password, repassword, userRole }
 
     const handleRegister = async () => {
         try {
-            const register = url + '/register';
             const data = {
                 name: name,
-                surName: surName,
+                surname: surname,
                 email: email,
                 password: password,
                 repassword: repassword,
-                userRole: userRole
+                role: userRole
             };
-            const response = await fetch(register, {
+            console.log(data)
+            const response = await fetch(url + '/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { UserProvider } from './src/context/UserContext.jsx';
 import Home from './src/views/Home.jsx'
 import Login from './src/views/Login.jsx';
 import Register from './src/views/Register.jsx';
@@ -11,7 +11,12 @@ import Search from './src/views/Search.jsx';
 import WaitAccount from './src/views/WaitAccount.jsx';
 import Profile from './src/views/Profile.jsx';
 import Worker from './src/views/Worker.jsx';
+import WorkerProfile from './src/views/WorkerProfile.jsx';
 import * as Font from 'expo-font';
+import { Provider } from 'react-redux';
+import store from './src/redux/store.js';
+
+
 
 export default function App() {
   // Función para cargar fuentes de manera asincrónica
@@ -30,8 +35,9 @@ export default function App() {
 
 
   return (
-    <UserProvider>
+    <Provider store={store}>
       <NavigationContainer>
+
         <Stack.Navigator initialRouteName="unlock">
           <Stack.Screen name="home" options={{ headerShown: false, gestureEnabled: false }} component={Home} />
           <Stack.Screen name="login" options={{ headerShown: false }} component={Login} />
@@ -40,10 +46,13 @@ export default function App() {
           <Stack.Screen name="register2" options={{ headerShown: false }} component={Register2} />
           <Stack.Screen name="search" options={{ headerShown: false }} component={Search} />
           <Stack.Screen name="wait" options={{ headerShown: false }} component={WaitAccount} />
-          <Stack.Screen name='profile' options={{ headerShown: false }} component={Profile}/>
-          <Stack.Screen name='worker' options={({ route }) => ({ title: route.params.categoryName, headerShown: false })} component={Worker}/>
+          <Stack.Screen name='profile' options={{ headerShown: false }} component={Profile} />
+          <Stack.Screen name='worker' options={({ route }) => ({ title: route.params.categoryName, headerShown: false })} component={Worker} />
+          <Stack.Screen name='workerprofile' options={{ headerShown: false }} component={WorkerProfile} />
         </Stack.Navigator>
+
       </NavigationContainer>
-    </UserProvider>
+      <StatusBar style="light" />
+    </Provider>
   );
 }

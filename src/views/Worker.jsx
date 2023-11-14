@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ScrollView } from 'react-native';
+import { View, Text, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import url from '../components/url';
-import { Button } from '@rneui/base';
+import { Button } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
+
 
 const Worker = ({ route }) => {
   const { categoryId } = route.params; // categoryId es la ID de la categoría
   const [workers, setWorkers] = useState([]);
-  const [category, setCategory] = useState(null); // Define la variable category y su función setState
-  const [errorMessage, setErrorMessage] = useState(null); // Define la variable errorMessage y su función setState
+  const [category, setCategory] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [description, setDescription] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function fetchWorkersByCategory() {
@@ -44,11 +47,26 @@ const Worker = ({ route }) => {
           data={workers}
           keyExtractor={(worker) => worker._id.toString()}
           renderItem={({ item, index }) => (
-            <View style={[styles.workerItem, index % 2 === 0 ? styles.evenItem : styles.oddItem]}>
-              <Text style={styles.text2}>Nombre del trabajador: {item.user ? item.user.name : 'Sin nombre'}</Text>
+            <View style={styles.workerItem}>
+              <Text style={styles.text2}>Nombre: {item.user ? item.user.name : 'Sin nombre'}</Text>
               <Text style={styles.text2}>Experiencia: {item.experience}</Text>
-              <Text style={styles.text2}>Descripción: {item.description}</Text>
-              <Button title={'Contratar'} onPress={''}></Button>
+              <View style={styles.content}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    navigation.navigate('workerprofile', {
+                      userId: item._id,
+                      workers: workers,
+                      description: item.description,
+                      category: category,
+                    });
+                  }}
+                >
+                  <Text style={styles.buttonText}>
+                    Ver Más
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         />
@@ -83,20 +101,33 @@ const styles = ScaledSheet.create({
     marginLeft: '20@ms',
     fontFamily: 'Product-Sans',
     fontSize: 25,
-    color: '#FFFF',
+    color: 'black',
     borderColor: '#000000',
+    marginBottom: '5@ms'
   },
   workerItem: {
-    backgroundColor: 'black', // Fondo blanco por defecto
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fondo blanco por defecto
     padding: '10@ms',
     margin: '5@ms',
     borderRadius: 10,
   },
-  evenItem: {
-    backgroundColor: 'lightblue', // Fondo azul claro para los elementos pares
+  button: {
+    backgroundColor: 'black',
+    borderRadius: 20,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  oddItem: {
-    backgroundColor: 'lightgreen', // Fondo verde claro para los elementos impares
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    padding: 10,
+  },
+  content: {
+    padding: '5@ms',
+    borderRadius: '10@ms',
+    alignItems: 'center',
   },
 });
 

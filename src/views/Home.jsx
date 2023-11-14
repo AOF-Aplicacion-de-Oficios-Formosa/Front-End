@@ -15,8 +15,8 @@ export default function Home() {
             <Text style={styles.text}>Bienvenid@</Text>
             <Cards />
             <Image
-            source={require('../../assets/img/formosa.png')}
-            style={styles.image}/>
+                source={require('../../assets/img/formosa.png')}
+                style={styles.image} />
         </View>
     );
 }

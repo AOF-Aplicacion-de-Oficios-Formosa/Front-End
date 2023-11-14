@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
-import { View, Text, Image, StyleSheet, } from 'react-native';
+import { View, Text, Image, StyleSheet, Modal, ActivityIndicator } from 'react-native';
 import OpenSettings from 'react-native-open-settings';
 import CameraButtons from '../components/Register/CameraButtons';
 import SelectDropdown from 'react-native-select-dropdown'
@@ -10,6 +10,11 @@ import { ScaledSheet } from 'react-native-size-matters';
 import url from './../components/url';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import UploadToCloudinary from '../components/UploadToCloudinary';
+
+
+
+
 
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -21,6 +26,8 @@ const Register2 = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigation = useNavigation()
+  const [cloudinaryImageUrl, setCloudinaryImageUrl] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -46,16 +53,6 @@ const Register2 = () => {
       }
     }
   };
-  const saveImage = async () => {
-    if (image) {
-      try {
-        await MediaLibrary.createAssetAsync(image);
-        alert('Foto guardada! ✌️');
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  };
 
   const openImagePicker = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -70,6 +67,25 @@ const Register2 = () => {
       } else {
         alert('No se seleccionó ninguna foto.😒');
       }
+    }
+  };
+
+  const handleUpdata = async () => {
+    if (image) {
+      setModalVisible(true);
+      const uploadedImageUrl = await UploadToCloudinary(image);
+      if (uploadedImageUrl) {
+        setCloudinaryImageUrl(uploadedImageUrl);
+        console.log('Imagen subida a Cloudinary:', uploadedImageUrl);
+        // Puedes hacer lo que necesites con la URL de la imagen en Cloudinary
+        setModalVisible(false); // Oculta el modal cuando se completa la subida
+        navigation.navigate('wait');
+      } else {
+        console.log('Error al subir la imagen a Cloudinary');
+        setModalVisible(false); // Oculta el modal en caso de error
+      }
+    } else {
+      alert('No has seleccionado una imagen.');
     }
   };
 
@@ -125,8 +141,6 @@ const Register2 = () => {
         console.error('Error al obtener datos de categorías:', error);
       }
     };
-
-    // Llamar a la función fetchData para obtener y ordenar las categorías
     fetchData();
   }, []);
 
@@ -178,7 +192,9 @@ const Register2 = () => {
                 setSelectedImage(null);
               }}
             />
-            <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={() => navigation.navigate('wait')} />
+            <CameraButtons icon="check" title="Enviar" fontFamily='Product-Sans' onPress={() => {
+              handleUpdata();
+            }} />
           </View>
         ) : (
           <View style={styles.buttons}>
@@ -210,6 +226,18 @@ const Register2 = () => {
           </View>
         )
         }
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <ActivityIndicator size="small" color="#084c8c" />
+              <Text style={styles.modalText}>Subiendo imagen...</Text>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -277,6 +305,25 @@ const styles = ScaledSheet.create({
     marginTop: '35@ms',
     marginLeft: '10@ms',
     marginRight: '10@ms',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    padding: '16@ms',
+    backgroundColor: 'white',
+    borderRadius: '8@ms',
+  },
+  linearProgress: {
+    marginBottom: '16@ms',
+  },
+  modalText: {
+    fontSize: '16@ms',
+    textAlign: 'center',
   },
 });
 

@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import CategoryList from '../components/Category/CategoryList'
-
 import { Octicons } from '@expo/vector-icons';
+import Register2 from './Register2';
 const Tab = createBottomTabNavigator()
 
 function UI() {
@@ -22,6 +22,7 @@ function UI() {
             >
                 {() => <CategoryList filteredCategories={filteredCategories} setSearchText={setSearchText} searchText={searchText} />}
             </Tab.Screen>
+
         </Tab.Navigator>
     )
 }

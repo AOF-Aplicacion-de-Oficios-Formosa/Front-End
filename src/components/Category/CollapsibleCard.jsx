@@ -8,7 +8,7 @@ const CollapsibleCard = ({ title }) => {
 
 
     return (
-        <View style={[styles.card]}>
+        <View style={styles.card}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>{title}</Text>
                     <Entypo name="chevron-small-right" size={24} color="black" />
@@ -35,14 +35,6 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 30,
         fontFamily: 'Product-Sans',
-    },
-    description: {
-        padding: 15,
-    },
-    descriptionText: {
-        fontSize: 20,
-        fontFamily: 'Product-Sans',
-        margin: 10,
     },
 });
 
