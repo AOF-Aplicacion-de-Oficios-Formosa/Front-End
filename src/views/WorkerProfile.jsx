@@ -51,7 +51,12 @@ const WorkerProfile = () => {
             },
             body: JSON.stringify(requestData),
         })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
             .then((data) => {
                 console.log('Respuesta del servidor:', data);
             })
@@ -63,7 +68,6 @@ const WorkerProfile = () => {
     useEffect(() => {
         if (worker && worker.user) {
             const userId = worker.user._id;
-
             async function fetchUserData() {
                 try {
                     const response = await fetch(url + `/user/${userId}`, {
@@ -71,7 +75,7 @@ const WorkerProfile = () => {
                     });
 
                     if (!response.ok) {
-                        throw new Error('La solicitud no fue exitosa');
+                        throw new Error('La solicitud no fue exitosa. Código de estado: ' + response.status);
                     }
 
                     const data = await response.json();

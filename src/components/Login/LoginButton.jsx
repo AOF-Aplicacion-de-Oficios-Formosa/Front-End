@@ -21,7 +21,7 @@ const LoginButton = ({ auth }) => {
 
             if (response && response.payload && response.payload.ok) {
                 // Inicio de sesión exitoso
-                navigation.navigate('profile');
+                navigation.navigate('search');
             } else {
                 // Mostrar el mensaje de error en el modal
                 const errorMsg = response && response.payload && response.payload.error || 'Intente de nuevo';

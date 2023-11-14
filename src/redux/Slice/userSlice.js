@@ -77,6 +77,20 @@ export const GetUser = createAsyncThunk('GetUser', async () => {
     }
 });
 
+export const LogOutUser = createAsyncThunk('LogOutUser', async () => {
+    try {
+        // Puedes realizar cualquier lógica adicional aquí antes de realizar el logout
+
+        // Elimina el token almacenado en AsyncStorage
+        await AsyncStorage.removeItem("token");
+
+        return { ok: true, msg: 'Sesión cerrada exitosamente' };
+    } catch (error) {
+        console.error("Error al cerrar sesión", error);
+        throw error;
+    }
+});
+
 const initialState = {
     status: null,
     loading: 'idle',
@@ -108,6 +122,16 @@ export const userSlice = createSlice({
         builder.addCase(GetUser.rejected, (state) => {
             state.loading = 'failed'
         })
+        builder.addCase(LogOutUser.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(LogOutUser.fulfilled, (state, actions) => {
+            state.loading = false;
+            state.status = actions.payload;
+        });
+        builder.addCase(LogOutUser.rejected, (state) => {
+            state.loading = 'failed';
+        });
     }
 })
 

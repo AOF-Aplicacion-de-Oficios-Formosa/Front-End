@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { Input } from 'react-native-elements';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetUser } from '../redux/Slice/userSlice';
+import { GetUser, LogOutUser } from '../redux/Slice/userSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const Profile = () => {
     const dispatch = useDispatch()
     const dataUser = useSelector(state => state.user.dataUser);
+    const navigation = useNavigation()
 
-    console.log("info ", dataUser)
+    console.log("info", dataUser)
 
     const getDataUser = async () => {
         await dispatch(GetUser())
@@ -18,6 +20,12 @@ const Profile = () => {
     useEffect(() => {
         getDataUser();
     }, [])
+
+    const handleLogOut = async () => {
+        // Llama a la acción LogOutUser para cerrar la sesión
+        await dispatch(LogOutUser());
+        navigation.navigate('home')
+    };
 
     return (
         <View style={styles.container}>
@@ -31,10 +39,18 @@ const Profile = () => {
                     </View>
                     <View style={styles.profileImageContainer}>
                         <View style={styles.profileImageCircle}>
-                            <Image
-                                source={require('../../assets/img/WIN_20231101_16_09_20_Pro.jpg')}
-                                style={styles.profileImage}
-                            />
+                            {dataUser.urlImg ? (
+                                <Image
+                                    source={{ uri: dataUser.urlImg }}
+                                    style={styles.profileImage}
+                                    onError={() => console.log('Error al cargar la imagen')}
+                                />
+                            ) : (
+                                <Image
+                                    source={require('../../assets/img/3177440.png')}
+                                    style={styles.profileImage}
+                                />
+                            )}
                         </View>
                     </View>
                     <View style={styles.inputWrapper}>
@@ -48,7 +64,7 @@ const Profile = () => {
                         </View>
                         <View style={styles.inputContainer}>
                             <Input
-                                value={dataUser.surname}
+                                value={dataUser.surname || "Sin apellido."}
                                 editable={false}
                                 inputStyle={styles.input}
                                 label={<Text style={styles.labelStyle}>Apellido:</Text>}
@@ -61,6 +77,19 @@ const Profile = () => {
                                 inputStyle={styles.input}
                                 label={<Text style={styles.labelStyle}>Email:</Text>}
                             />
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <Input
+                                value={dataUser.role}
+                                editable={false}
+                                inputStyle={styles.input}
+                                label={<Text style={styles.labelStyle}>Tu rol en la aplicación es:</Text>}
+                            />
+                        </View>
+                        <View style={styles.content}>
+                            <TouchableOpacity onPress={handleLogOut} style={styles.logOutButton}>
+                                <Text style={styles.logOutButtonText}>Cerrar sesión</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -106,14 +135,22 @@ const styles = ScaledSheet.create({
         marginRight: '10@ms',
         top: '-80@s',
         marginBottom: '-70@s',
-
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: '60@vs',
+        width: '300@s',
+        margin: '10@ms',
+        marginLeft: '25@s',
+        padding: '10@ms',
+        marginBottom: '-5@s',
     },
     textInput: {
         fontSize: '16@s',
         fontWeight: 'bold',
         color: 'white',
         fontFamily: 'Product-Sans',
-        bottom: 5
     },
     input: {
         flex: 1,
@@ -140,10 +177,28 @@ const styles = ScaledSheet.create({
         borderRadius: '60@s',
     },
     labelStyle: {
-        fontSize: '13@s',
+        fontSize: '15@s',
         fontWeight: 'bold',
-        color: 'black',
-        fontFamily: 'Product-Sans'
+        color: 'white',
+        fontFamily: 'Product-Sans',
+        marginTop: '15@ms'
+    },
+    content: {
+        padding: '5@ms',
+        alignItems: 'center',
+    },
+    logOutButton: {
+        backgroundColor: 'red',
+        borderRadius: '25@s',
+        width: '130@s',
+        height: '40@s',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    logOutButtonText: {
+        color: 'white',
+        fontSize: '15@s',
+        fontWeight: 'bold',
     },
 });
 
