@@ -124,14 +124,14 @@ export const userSlice = createSlice({
         })
         builder.addCase(LogOutUser.pending, (state) => {
             state.loading = true;
-          });
-          builder.addCase(LogOutUser.fulfilled, (state, actions) => {
+        });
+        builder.addCase(LogOutUser.fulfilled, (state, actions) => {
             state.loading = false;
             state.status = actions.payload;
-          });
-          builder.addCase(LogOutUser.rejected, (state) => {
+        });
+        builder.addCase(LogOutUser.rejected, (state) => {
             state.loading = 'failed';
-          });
+        });
     }
 })
 

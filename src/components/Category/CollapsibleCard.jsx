@@ -9,10 +9,10 @@ const CollapsibleCard = ({ title }) => {
 
     return (
         <View style={styles.card}>
-                <View style={styles.title}>
-                    <Text style={styles.titleText}>{title}</Text>
-                    <Entypo name="chevron-small-right" size={24} color="black" />
-                </View>
+            <View style={styles.title}>
+                <Text style={styles.titleText}>{title}</Text>
+                <Entypo name="chevron-small-right" size={24} color="black" />
+            </View>
         </View>
     );
 };
