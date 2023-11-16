@@ -22,28 +22,23 @@ const WorkerProfile = () => {
         }
     }, [category]);
 
-    // Función para abrir el modal
     const openModal = () => {
         setModalVisible(true);
     };
 
-    // Función para cerrar el modal
     const closeModal = () => {
         setModalVisible(false);
     };
 
     const handleHire = () => {
-        // Prepara los datos para enviar al endpoint de contratación
         const requestData = {
-            category: category?.name, // Reemplaza con la categoría real
-            nombreCliente: userData?.user?.name, // Nombre del cliente
-            emailCliente: 'tu_correo@gmail.com', // Correo del cliente
-            mailWorker: userData?.user?.email, // Correo del trabajador
-            descripcionServicio: desc, // Descripción del servicio
-            fecha: selectedDate, // Fecha preferida, si aplicable
+            category: category?.name,
+            nombreCliente: userData?.user?.name,
+            emailCliente: 'tu_correo@gmail.com',
+            mailWorker: userData?.user?.email,
+            descripcionServicio: desc,
+            fecha: selectedDate,
         };
-
-        // Realiza una solicitud al endpoint /contratar para enviar los datos
         fetch(url + '/contratar', {
             method: 'POST',
             headers: {
@@ -81,12 +76,9 @@ const WorkerProfile = () => {
                     console.error('Hubo un error:', error);
                 }
             }
-
             fetchUserData();
         }
     }, [worker]);
-
-
 
     return (
         <View style={styles.container}>
