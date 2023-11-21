@@ -10,7 +10,7 @@ const CollapsibleCard = ({ title }) => {
     return (
         <View style={styles.card}>
             <View style={styles.title}>
-                <Text style={styles.titleText}>{title}</Text>
+                <Text numberOfLines={2} style={styles.titleText}>{title}</Text>
                 <Entypo name="chevron-small-right" size={24} color="black" />
             </View>
         </View>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     title: {
-        padding: 15,
+        padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
         flexDirection: 'row',
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     titleText: {
-        fontSize: 30,
+        fontSize: 25,
         fontFamily: 'Product-Sans',
     },
 });
