@@ -6,6 +6,7 @@ import { Octicons, Feather, AntDesign, FontAwesome5, Entypo } from '@expo/vector
 import Register2 from './Register2';
 import Profile from './Profile';
 import Dates from './Dates';
+import ChatScreen from './ChatScreen';
 const Tab = createBottomTabNavigator()
 
 function UI() {
@@ -35,6 +36,17 @@ function UI() {
                 }}
             >
                 {() => <Dates />}
+            </Tab.Screen>
+            <Tab.Screen
+                name='Chat'
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <FontAwesome5 name="calendar" size={24} color={color} />
+                    ),
+                    headerShown: false,
+                }}
+            >
+                {() => <ChatScreen />}
             </Tab.Screen>
             <Tab.Screen
                 name='Perfil'

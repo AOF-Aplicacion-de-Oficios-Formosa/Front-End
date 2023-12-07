@@ -29,8 +29,7 @@ const Chat = () => {
     }, [])
 
     useEffect(() => {
-        socket.on('chat message', (newMessage) => {
-            console.log("New message received:", newMessage);
+        socket.on('new message', (newMessage) => {
             dispatch(receiveMessage(newMessage));
         });
 

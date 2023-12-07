@@ -70,9 +70,9 @@ export const GetUser = createAsyncThunk('GetUser', async () => {
         }
 
         const users = await response.json();
-if (!users.user) {
-    throw new Error("La respuesta no contiene la propiedad 'user'");
-} // Parsea la respuesta JSON
+            if (!users.user) {
+            throw new Error("La respuesta no contiene la propiedad 'user'");
+            } // Parsea la respuesta JSON
         console.log("user redux ", users);
         return users.user;
     } catch (error) {

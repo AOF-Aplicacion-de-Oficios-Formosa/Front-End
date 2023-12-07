@@ -16,6 +16,7 @@ import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import store from './src/redux/store.js';
 import Chat from './src/components/Chat/Chat.jsx';
+import ChatScreen from './src/views/ChatScreen.jsx';
 
 
 
@@ -51,6 +52,7 @@ export default function App() {
           <Stack.Screen name='worker' options={({ route }) => ({ title: route.params.categoryName, headerShown: false })} component={Worker} />
           <Stack.Screen name='workerprofile' options={{ headerShown: false }} component={WorkerProfile} />
           <Stack.Screen name='chat' options={{ headerShown: true  }} component={Chat}/>
+          <Stack.Screen name='chatscreen' options={{ headerShown: false  }} component={ChatScreen}/>
         </Stack.Navigator>
 
       </NavigationContainer>
