@@ -15,6 +15,7 @@ import WorkerProfile from './src/views/WorkerProfile.jsx';
 import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import store from './src/redux/store.js';
+import Chat from './src/components/Chat/Chat.jsx';
 
 
 
@@ -49,10 +50,11 @@ export default function App() {
           <Stack.Screen name='profile' options={{ headerShown: false }} component={Profile} />
           <Stack.Screen name='worker' options={({ route }) => ({ title: route.params.categoryName, headerShown: false })} component={Worker} />
           <Stack.Screen name='workerprofile' options={{ headerShown: false }} component={WorkerProfile} />
+          <Stack.Screen name='chat' options={{ headerShown: true  }} component={Chat}/>
         </Stack.Navigator>
 
       </NavigationContainer>
-      <StatusBar style="light" />
+      <StatusBar style="auto" />
     </Provider>
   );
 }

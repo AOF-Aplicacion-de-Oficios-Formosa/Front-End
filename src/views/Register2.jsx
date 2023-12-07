@@ -13,9 +13,6 @@ import { useNavigation } from '@react-navigation/native';
 import UploadToCloudinary from '../components/UploadToCloudinary';
 
 
-
-
-
 const Register2 = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);

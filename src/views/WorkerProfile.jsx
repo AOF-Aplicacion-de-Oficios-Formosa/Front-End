@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, TextInput, TouchableOpacity, ScrollView, Text, Modal } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Input } from '@rneui/themed';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import url from '../components/url';
 
 const WorkerProfile = () => {
@@ -15,6 +15,7 @@ const WorkerProfile = () => {
     const [workerName, setWorkerName] = useState('');
     const [modalCategory, setModalCategory] = useState(null);
     const [selectedDate, setSelectedDate] = useState('');
+    const navigation = useNavigation()
 
     useEffect(() => {
         if (category) {
@@ -28,31 +29,6 @@ const WorkerProfile = () => {
 
     const closeModal = () => {
         setModalVisible(false);
-    };
-
-    const handleHire = () => {
-        const requestData = {
-            category: category?.name,
-            nombreCliente: userData?.user?.name,
-            emailCliente: 'tu_correo@gmail.com',
-            mailWorker: userData?.user?.email,
-            descripcionServicio: desc,
-            fecha: selectedDate,
-        };
-        fetch(url + '/contratar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Respuesta del servidor:', data);
-            })
-            .catch((error) => {
-                console.error('Error en la solicitud:', error);
-            });
     };
 
     useEffect(() => {
@@ -133,55 +109,19 @@ const WorkerProfile = () => {
                 </View>
             </ScrollView>
             <View style={styles.content}>
-                <TouchableOpacity style={styles.hireButton} onPress={() => setModalVisible(true)}>
+                <TouchableOpacity
+                    style={styles.hireButton}
+                    onPress={() => {
+                        navigation.navigate('chat', {
+                            userId: userId,
+                            worker: worker,
+                            workerName: workerName,
+                        });
+                    }}
+                >
                     <Text style={styles.buttonText}>Contratar</Text>
                 </TouchableOpacity>
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={isModalVisible}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>Contratar a {workerName}</Text>
-                        <Text style={styles.modalTitle}>Categoría: {modalCategory ? modalCategory.name : 'Categoría no disponible'}</Text>
-                        <Input
-                            value={userData?.user?.email || 'Correo no disponible'}
-                            editable={false}
-                            label={<Text style={styles.labelStyle}>Email del destinatario:</Text>}
-                            style={styles.emailInput}
-                            inputContainerStyle={{ borderBottomWidth: 0 }}
-                        />
-                        <Input
-                            label={<Text style={styles.labelStyle}>Fecha preferida:</Text>}
-                            style={styles.descriptionInput}
-                            placeholder="DD-MM-AA"
-                            inputContainerStyle={{ borderBottomWidth: 0 }}
-                            inputMode='tel'
-                            onChangeText={(text) => setSelectedDate(text)}
-                            value={selectedDate}
-                        />
-                        <Input
-                            style={styles.descriptionInput}
-                            placeholder="Ej: Necesito resolver un problema de gotera."
-                            onChangeText={(text) => setDescription(text)}
-                            value={desc}
-                            label={<Text style={styles.labelStyle}>Describa brevemente el servicio que requiere:</Text>}
-                            multiline
-                            inputContainerStyle={{ borderBottomWidth: 0 }}
-                        />
-                        <View style={styles.modalButtonContainer}>
-                            <TouchableOpacity style={styles.modalButton} onPress={handleHire}>
-                                <Text style={styles.modalButtonText}>Contratar</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.modalButton} onPress={closeModal}>
-                                <Text style={styles.modalButtonText}>Cancelar</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
         </View>
     );
 };

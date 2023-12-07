@@ -62,13 +62,17 @@ export const GetUser = createAsyncThunk('GetUser', async () => {
                 'Content-Type': 'application/json',
                 'token': token
             },
+            timeout: 5000,
         });
 
         if (!response.ok) {
             throw new Error(`Error al obtener usuario único. Status: ${response.status}`);
         }
 
-        const users = await response.json(); // Parsea la respuesta JSON
+        const users = await response.json();
+if (!users.user) {
+    throw new Error("La respuesta no contiene la propiedad 'user'");
+} // Parsea la respuesta JSON
         console.log("user redux ", users);
         return users.user;
     } catch (error) {
