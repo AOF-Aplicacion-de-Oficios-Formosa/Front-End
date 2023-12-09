@@ -13,11 +13,14 @@ const ChatScreen = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch(url + '/user');
+                const response = await fetch(`${url}/user`);
                 const result = await response.json();
 
+                // Verificar la existencia de la propiedad 'users' en result
+                const usersArray = result && result.users ? result.users : [];
+
                 // Filtrar el usuario actual de la lista
-                const filteredUsers = result.users.filter(user => user._id !== dataUser._id);
+                const filteredUsers = usersArray.filter(user => user._id !== dataUser._id);
 
                 setUsers(filteredUsers);
             } catch (error) {
@@ -40,8 +43,8 @@ const ChatScreen = () => {
                 keyExtractor={(user) => user._id.toString()}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handleChatPress(item._id)}>
-                        <View>
-                            <Text>{item.name}</Text>
+                        <View style={styles.userItem}>
+                            <Text style={styles.userName}>{item.name}</Text>
                         </View>
                     </TouchableOpacity>
                 )}
@@ -53,7 +56,18 @@ const ChatScreen = () => {
 const styles = ScaledSheet.create({
     container: {
         flex: 1,
-    }
-})
+        padding: 16,
+        backgroundColor: '#fff',
+    },
+    userItem: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+        paddingVertical: 12,
+    },
+    userName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+});
 
 export default ChatScreen;

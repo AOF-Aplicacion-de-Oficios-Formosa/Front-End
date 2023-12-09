@@ -53,7 +53,7 @@ export const LoginUser = createAsyncThunk('LoginUser', async (data) => {
 
 export const GetUser = createAsyncThunk('GetUser', async () => {
     try {
-        console.log('get users')
+        console.log('get users');
         const getUser = url + '/userT';
         const token = await getToken();
         const response = await fetch(getUser, {
@@ -70,13 +70,20 @@ export const GetUser = createAsyncThunk('GetUser', async () => {
         }
 
         const users = await response.json();
-            if (!users.user) {
+        if (!users.user) {
             throw new Error("La respuesta no contiene la propiedad 'user'");
-            } // Parsea la respuesta JSON
+        }
+
         console.log("user redux ", users);
         return users.user;
     } catch (error) {
         console.log("Error al hacer el fetch", error);
+
+        // Maneja específicamente el error 429
+        if (error.message.includes('Error al obtener usuario único. Status: 429')) {
+            console.log('Error 429: Demasiadas solicitudes. Considera ajustar la frecuencia de las solicitudes.');
+        }
+
         throw error;
     }
 });
