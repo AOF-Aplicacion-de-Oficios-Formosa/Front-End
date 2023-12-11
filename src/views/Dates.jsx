@@ -5,10 +5,26 @@ import { Card } from '@rneui/themed';
 
 const Dates = () => {
     const data = [
-        { title: 'Peticion de cita.' },
-        { title: 'Peticion de citas.' },
-        { title: 'Peticion de cita.' },
-        // Agrega más elementos según sea necesario
+        {
+            title: 'Peticion de cita.',
+            status: 'Pendiente',
+            user: 'Diego Britos'
+        },
+        {
+            title: 'Peticion de cita.',
+            status: 'En Proceso',
+            user: 'Nahuel Perez'
+        },
+        {
+            title: 'Peticion de cita.',
+            status: 'Finalizado',
+            user: 'Marcos Montellano'
+        },
+        {
+            title: 'Peticion de cita.',
+            status: 'Pendiente',
+            user: 'Micaela Benitez'
+        },
     ];
 
     const renderItem = ({ item }) => (
@@ -16,6 +32,8 @@ const Dates = () => {
             <Card.Title style={styles.text}>{item.title}</Card.Title>
             <Card.Divider />
             <Image source={require('../../assets/img/6274.jpg')} style={styles.image} />
+            <Text style={styles.text2}>Usuario: {item.user}</Text>
+            <Text style={styles.text2}>Estado: {item.status}</Text>
         </Card>
     );
 
@@ -36,16 +54,19 @@ const styles = ScaledSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'rgba(2,76,139,255)',
+
     },
     card: {
         flex: 1,
-        margin: 10,
+        margin: 5,
         borderRadius: 10,
         backgroundColor: '#f7f7f7',
+        marginLeft: 10,
+        marginRight: 10
     },
     cardContainer: {
         justifyContent: 'space-between',
-        marginTop: '15@ms'
+        marginTop: '25@ms'
     },
     text: {
         fontFamily: 'Product-Sans',
@@ -54,9 +75,15 @@ const styles = ScaledSheet.create({
         borderColor: '#000000',
         marginBottom: '5@ms',
     },
+    text2: {
+        fontFamily: 'Product-Sans',
+        fontSize: 15,
+        color: 'black',
+        borderColor: '#000000',
+    },
     image: {
         width: '100%',
-        height: '50%',
+        height: 120,
         borderRadius: 20,
         resizeMode: 'cover',
     },

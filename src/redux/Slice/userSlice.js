@@ -73,8 +73,6 @@ export const GetUser = createAsyncThunk('GetUser', async () => {
         if (!users.user) {
             throw new Error("La respuesta no contiene la propiedad 'user'");
         }
-
-        console.log("user redux ", users);
         return users.user;
     } catch (error) {
         console.log("Error al hacer el fetch", error);

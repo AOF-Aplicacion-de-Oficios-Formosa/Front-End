@@ -31,6 +31,34 @@ const WorkerProfile = () => {
         setModalVisible(false);
     };
 
+    const handleHire = () => {
+        // Prepara los datos para enviar al endpoint de contratación
+        const requestData = {
+            category: category?.name, // Reemplaza con la categoría real
+            nombreCliente: userData?.user?.name, // Nombre del cliente
+            emailCliente: 'tu_correo@gmail.com', // Correo del cliente
+            mailWorker: userData?.user?.email, // Correo del trabajador
+            descripcionServicio: desc, // Descripción del servicio
+            fecha: selectedDate, // Fecha preferida, si aplicable
+        };
+
+        // Realiza una solicitud al endpoint /contratar para enviar los datos
+        fetch(url + '/contratar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Respuesta del servidor:', data);
+            })
+            .catch((error) => {
+                console.error('Error en la solicitud:', error);
+            });
+    };
+
     useEffect(() => {
         if (worker && worker.user) {
             const userId = worker.user._id;
@@ -109,6 +137,9 @@ const WorkerProfile = () => {
                 </View>
             </ScrollView>
             <View style={styles.content}>
+                <TouchableOpacity style={styles.hireButton} onPress={() => setModalVisible(true)}>
+                    <Text style={styles.buttonText}>Contratar</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.hireButton}
                     onPress={() => {
@@ -119,9 +150,54 @@ const WorkerProfile = () => {
                         });
                     }}
                 >
-                    <Text style={styles.buttonText}>Contratar</Text>
+                    <Text style={styles.buttonText}>Chat</Text>
                 </TouchableOpacity>
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisible}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>Contratar a {workerName}</Text>
+                        <Text style={styles.modalTitle}>Categoría: {modalCategory ? modalCategory.name : 'Categoría no disponible'}</Text>
+                        <Input
+                            value={userData?.user?.email || 'Correo no disponible'}
+                            editable={false}
+                            label={<Text style={styles.labelStyle}>Email del destinatario:</Text>}
+                            style={styles.emailInput}
+                            inputContainerStyle={{ borderBottomWidth: 0 }}
+                        />
+                        <Input
+                            label={<Text style={styles.labelStyle}>Fecha preferida:</Text>}
+                            style={styles.descriptionInput}
+                            placeholder="DD-MM-AA"
+                            inputContainerStyle={{ borderBottomWidth: 0 }}
+                            inputMode='tel'
+                            onChangeText={(text) => setSelectedDate(text)}
+                            value={selectedDate}
+                        />
+                        <Input
+                            style={styles.descriptionInput}
+                            placeholder="Ej: Necesito resolver un problema de gotera."
+                            onChangeText={(text) => setDescription(text)}
+                            value={desc}
+                            label={<Text style={styles.labelStyle}>Describa brevemente el servicio que requiere:</Text>}
+                            multiline
+                            inputContainerStyle={{ borderBottomWidth: 0 }}
+                        />
+                        <View style={styles.modalButtonContainer}>
+                            <TouchableOpacity style={styles.modalButton} onPress={handleHire}>
+                                <Text style={styles.modalButtonText}>Contratar</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.modalButton} onPress={closeModal}>
+                                <Text style={styles.modalButtonText}>Cancelar</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -177,6 +253,7 @@ const styles = ScaledSheet.create({
         height: '40@s',
         justifyContent: 'center',
         alignItems: 'center',
+        marginLeft: '5@s',
     },
     buttonText: {
         color: 'white',
@@ -218,16 +295,18 @@ const styles = ScaledSheet.create({
         marginBottom: '-5@s',
     },
     content: {
+        display: 'flex',
+        justifyContent: 'center',
         padding: '5@ms',
         borderRadius: '10@ms',
         alignItems: 'center',
+        flexDirection: 'row'
     },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
     modalContent: {
         backgroundColor: 'white',

@@ -1,4 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import url from '../../components/url';
+
+// Acción asincrónica utilizando createAsyncThunk
 import axios from 'axios'; // Importa Axios
 
 export const sendMessageAsync = createAsyncThunk(
@@ -16,7 +19,7 @@ export const sendMessageAsync = createAsyncThunk(
       return response.data.message;
     } catch (error) {
       // Lanza el error para ser manejado por el reducer
-      throw new Error(`Error al enviar el mensaje: ${error.message}`);
+      throw new Error(`Error al enviar el mensaje: ${response.statusText} (${response.status}) - ${errorData.message}`);
     }
   }
 );
@@ -30,9 +33,9 @@ const chatSlice = createSlice({
   },
   reducers: {
     receiveMessage: (state, action) => {
-      const { message, fromUserId, /* otras propiedades necesarias */ } = action.payload;
+      const { message, fromUserId, toUserId } = action.payload;
       if (typeof message === 'string') {
-        state.messages.push({ message, fromUserId /* otras propiedades necesarias */ });
+        state.messages.push({ message, fromUserId, toUserId});
       }
     },
   },

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View, Text, TextInput, Button, FlatList, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendMessageAsync, receiveMessage } from '../../redux/Slice/chatSlice';
 import { GetUser } from '../../redux/Slice/userSlice';
@@ -7,7 +7,6 @@ import url from '../url';
 import { ScaledSheet } from 'react-native-size-matters';
 import io from 'socket.io-client';
 import { useRoute } from '@react-navigation/native';
-import { Input } from '@rneui/themed';
 
 const Chat = () => {
     const route = useRoute();
@@ -16,9 +15,8 @@ const Chat = () => {
     const messages = useSelector((state) => state.chat.messages);
     const [messageText, setMessageText] = useState('');
     const dataUser = useSelector((state) => state.user.dataUser);
-    console.log("URL:", url); // Agregar esta línea para verificar la URL
+    const socketRef = useRef(null);
 
-    // Utiliza useCallback para evitar que la función se cree en cada renderizado
     const getDataUser = useCallback(async () => {
         await dispatch(GetUser());
     }, [dispatch]);
@@ -27,76 +25,45 @@ const Chat = () => {
         getDataUser();
     }, [getDataUser]);
 
-    // Conectar el socket una vez que se ha obtenido el usuario
-    const socket = io(url, {
-        query: { userId: dataUser._id },
-    });
-
     useEffect(() => {
-        const handleConnect = () => {
-            console.log('Conectado al servidor de Socket.IO');
-        };
+        if (dataUser && !socketRef.current) {
+            // Crear y conectar el socket cuando hay un usuario y aún no existe el socket
+            const newSocket = io(url, {
+                query: { userId: dataUser._id }
+            });
 
-        const handleDisconnect = () => {
-            console.log('Desconectado del servidor de Socket.IO');
-        };
+            newSocket.on('new message', (newMessage) => {
+                dispatch(receiveMessage(newMessage));
+            });
 
-        const handleReconnect = () => {
-            console.log('Reconectado al servidor de Socket.IO');
-        };
+            socketRef.current = newSocket;
 
-        const handleNewMessage = (newMessage) => {
-            console.log('Mensaje entrante:', newMessage);
-            dispatch(receiveMessage(newMessage));
-        };
-
-        socket.on('connect', handleConnect);
-        socket.on('disconnect', handleDisconnect);
-        socket.on('reconnect', handleReconnect);
-        socket.on('new message', handleNewMessage);
-
-        // Conectar el socket cuando se monta el componente
-        socket.connect();
-
-        // Desconectar el socket cuando se desmonta el componente
-        return () => {
-            socket.off('connect', handleConnect);
-            socket.off('disconnect', handleDisconnect);
-            socket.off('reconnect', handleReconnect);
-            socket.off('new message', handleNewMessage);
-            socket.disconnect();
-            console.log('Socket desconectado');
-        };
-    }, [dispatch, socket, dataUser]);
+            return () => {
+                // Desconectar el socket cuando el componente se desmonta
+                newSocket.disconnect();
+            };
+        }
+    }, [dataUser, dispatch]);
 
     const handleSendMessage = () => {
         const toUserId = worker.user ? worker.user._id : null;
         console.log("userId:", dataUser._id);
         console.log("workerId:", toUserId);
         console.log("messageText:", messageText);
-
-        // Enviar el mensaje al servidor
-        socket.emit('send message', {
-            fromUserId: dataUser._id,
-            toUserId: toUserId,
-            messageText: messageText,
-        });
-
+        dispatch(sendMessageAsync({ fromUserId: dataUser._id, toUserId: toUserId, messageText: messageText }));
         setMessageText('');
     };
-
-    let counter = 0; // Contador para claves únicas
 
     return (
         <View style={styles.container}>
             <FlatList
                 data={messages}
-                keyExtractor={(item) => (item._id ? item._id.toString() : (counter++).toString())}
+                keyExtractor={(item) => item._id ? item._id.toString() : ''}
                 renderItem={({ item }) => {
                     console.log('Mensaje:', item);
                     const messageText = typeof item.message === 'object' ? item.message.message || '' : item.message;
                     return (
-                        <View key={item._id || counter}>
+                        <View>
                             <Text style={item.fromUserId === dataUser._id ? styles.sentMessage : styles.receivedMessage}>
                                 {messageText}
                             </Text>
@@ -104,33 +71,40 @@ const Chat = () => {
                     );
                 }}
             />
-            <Input value={messageText} onChangeText={setMessageText} placeholder='Escribe' placeholderTextColor={'white'} />
+            <TextInput value={messageText} onChangeText={setMessageText} placeholder='Escribe' placeholderTextColor={'white'} />
             <Button title="Enviar" onPress={handleSendMessage} />
         </View>
     );
-};
+}
+
 
 const styles = ScaledSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'rgba(2,76,139,255)',
+        backgroundColor: 'rgba(2,76,139,255)'
+    },
+    text: {
+        color: 'white'
     },
     sentMessage: {
-        color: 'white',
         alignSelf: 'flex-end',
-        backgroundColor: 'blue',
+        backgroundColor: '#DCF8C5',
         padding: 8,
-        margin: 4,
+        marginVertical: 4,
         borderRadius: 8,
+        fontSize: 20,
+        marginRight: 10
     },
     receivedMessage: {
-        color: 'white',
         alignSelf: 'flex-start',
-        backgroundColor: 'green',
+        backgroundColor: '#E0E0E0',
         padding: 8,
-        margin: 4,
+        marginVertical: 4,
         borderRadius: 8,
+        fontSize: 20,
+        marginLeft: 10
     },
+
 });
 
 export default Chat;
